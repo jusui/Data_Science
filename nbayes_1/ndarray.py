@@ -28,14 +28,11 @@ print(vector_4)
 # 4 * 4 Unit matrix
 id_array = np.identity(4)
 print(id_array)
+print(id_array.dtype)
 
-
-
-
-
-
-
-
+id_array = np.identity(4, dtype = complex)
+print(id_array)
+print(id_array.dtype)
 
 
 
