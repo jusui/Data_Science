@@ -15,7 +15,7 @@ class Perceptron(object):
     Attribute
     ----------
 
-    w_ : 1 dim array
+    w_ : 1 dimension array
     weight
 
     errors_ : list
@@ -23,9 +23,11 @@ class Perceptron(object):
 
     """
 
+    # Initialize class(self == class instance)
     def __init__(self, eta = 0.01, n_iter = 10):
         self.eta = eta
         self.n_iter = n_iter
+
 
     def fit(self, X, y):
         """ 
@@ -48,6 +50,7 @@ class Perceptron(object):
 
         """
 
+        ## zero element, zero matrix(0, 0, ...)
         self.w_ = np.zeros(1 + X.shape[1])
         self.errors_ = []
 
