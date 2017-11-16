@@ -20,4 +20,3 @@ if __name__ == '__main__':
     x, y = 2.0, 5.0
     print("myfun(x,y) = %f" % myfun(x,y) )
     
-    
