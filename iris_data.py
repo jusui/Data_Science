@@ -82,7 +82,8 @@ def decision_region(X, y, classifier, resolution = 0.02):
 
 ### set new window
 fig = plt.figure()
-# サブプロットを追加
+
+# Add sub plot
 ax1 = fig.add_subplot(2,2,1)
 plt.xlabel('sepal length [cm]')
 plt.ylabel('petal length [cm]')
