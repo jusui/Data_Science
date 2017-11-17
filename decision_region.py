@@ -4,9 +4,6 @@ import pandas as pd
 from matplotlib.colors import ListedColormap
 from perceptron import Perceptron
 
-df = pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data', header = None)
-print(df.tail)
-
 def decision_region(X, y, classifier, resolution = 0.02):
     # Vars [1 : 100]
     y = df.iloc[0:100, 4].values
@@ -41,7 +38,7 @@ def decision_region(X, y, classifier, resolution = 0.02):
                            np.arange(x2_min, x2_max, resolution))
 
     # Execute prediction of 1-dim array feature
-    Z = classifier.predict(np.array([xx1.ravel(), xx2.rabel()]).T)
+    Z = classifier.predict(np.array([xx1.ravel(), xx2.ravel()]).T)
 
     # Exchange grid point with datasize
     Z = Z.reshape(xx1.shape)
@@ -59,22 +56,8 @@ def decision_region(X, y, classifier, resolution = 0.02):
                     alpha = 0.8, c = cmap(idx), \
                     marker = markers[idx], label = cl)
 
-if __name__ == '__main__':
-    # Vars [1 : 100]
-    y = df.iloc[0:100, 4].values
-    y = np.where( y == 'Iris-setosa', -1, 1 )
-    print(y)
-    
-    # [1:100], column(1:3)
-    X = df.iloc[0:100, [0, 2]].values
-    print(X)
-
-    # Object generator && Fit training model
-    ppn = Perceptron(eta = 0.1, n_iter = 10)
-    ppn.fit(X, y)
-
-    decision_region(X, y, classifier = ppn)
-    plt.xlabel('sepal length [cm]')
-    plt.ylabel('petal length [cm]')
-    plt.legend(loc = 'upper left')
-    plt.show()
+decision_region(X, y, classifier = ppn)
+plt.xlabel('sepal length [cm]')
+plt.ylabel('petal length [cm]')
+plt.legend(loc = 'upper left')
+plt.show()
