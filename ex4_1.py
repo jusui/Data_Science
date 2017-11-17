@@ -3,7 +3,6 @@
 This script is encoding test
 
 """
-
 import math
 
 def myfun(x, y):

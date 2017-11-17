@@ -1,7 +1,7 @@
-from decision_region import plot_decision_region
+from decision_region import decision_region
 
 # plot decision region
-plot_decision_region(X, y, classifier = ppn)
+decision_region(X, y, classifier = ppn)
 plt.xlabel('sepal length [cm]')
 plt.ylabel('petal length [cm]')
 plt.legend(loc = 'upper left')
