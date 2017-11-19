@@ -27,7 +27,7 @@ if __name__ == '__main__':
     ## Fit
     ada.fit(X_std, y)
 
-    ## Plot
+    ## def plot
     decision_region(X_std, y, classifier = ada)
 
     ## Title
@@ -40,7 +40,7 @@ if __name__ == '__main__':
     ## lenged
     plt.legend(loc = 'upper left')
 
-    ## Show
+    ## Show plot
     plt.show()
 
     ## Cost

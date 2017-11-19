@@ -6,29 +6,11 @@ from pylab import *
 from matplotlib.colors import ListedColormap
 from perceptron import Perceptron
 
-df = pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data', header = None)
-print(df.tail)
-
-# Vars [1 : 100]
-y = df.iloc[0:100, 4].values
-y = np.where( y == 'Iris-setosa', -1, 1 )
-print(y)
-
-# [1:100], column(1:3)
-X = df.iloc[0:100, [0, 2]].values
-print(X)
-
-# Plot setosa
-plt_setosa = plt.scatter(X[:50, 0], X[:50, 1], color = 'red', marker = 'o', label = 'setosa')
-
-# Plot versicolor
-plt_versicolor = plt.scatter(X[50:100, 0], X[50:100, 1], color = 'blue', marker = 'o', label = 'versicolor')
-
-# Object generator && Fit training model
-ppn = Perceptron(eta = 0.1, n_iter = 10)
-ppn.fit(X, y)
 
 def decision_region(X, y, classifier, resolution = 0.02):
+    df = pd.read_csv('https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data', header = None)
+    print(df.tail)
+    
     # Vars [1 : 100]
     y = df.iloc[0:100, 4].values
     y = np.where( y == 'Iris-setosa', -1, 1 )
@@ -80,26 +62,28 @@ def decision_region(X, y, classifier, resolution = 0.02):
                     alpha = 0.8, c = cmap(idx), \
                     marker = markers[idx], label = cl)
 
-### set new window
-fig = plt.figure()
+if __name__ == '__main__':
+    ### set new window
+    fig = plt.figure()
 
-# Add sub plot
-ax1 = fig.add_subplot(2,2,1)
-plt.xlabel('sepal length [cm]')
-plt.ylabel('petal length [cm]')
-plt.legend(loc = 'upper left')
+    # Add sub plot
+    ax1 = fig.add_subplot(2,2,1)
+    plt.xlabel('sepal length [cm]')
+    plt.ylabel('petal length [cm]')
+    plt.legend(loc = 'upper left')
 
-ax2 = fig.add_subplot(2,2,2)
-plt.plot(range(1, len(ppn.errors_) + 1 ), ppn.errors_, marker = 'o' )
-plt.xlabel('Epochs')
-plt.ylabel('Number of misclassfications')
+    ax2 = fig.add_subplot(2,2,2)
+    plt.plot(range(1, len(ppn.errors_) + 1 ), ppn.errors_, marker = 'o' )
+    plt.xlabel('Epochs')
+    plt.ylabel('Number of misclassfications')
 
-ax3 = fig.add_subplot(2,2,3)
-decision_region(X, y, classifier = ppn)
-plt.xlabel('sepal length [cm]')
-plt.ylabel('petal length [cm]')
-plt.legend(loc = 'upper left')
+    ax3 = fig.add_subplot(2,2,3)
+    decision_region(X, y, classifier = ppn)
+    plt.xlabel('sepal length [cm]')
+    plt.ylabel('petal length [cm]')
+    plt.legend(loc = 'upper left')
 
-plt.show()
-plt.savefig("decision_region.png")
-# plt.savefig("/Users/usui/work/python/Machine_Learning/figures/decision_region.png")
+    plt.show()
+    plt.savefig("decision_region.png")
+    # plt.savefig("/Users/usui/work/python/Machine_Learning/figures/decision_region.png")
+    
