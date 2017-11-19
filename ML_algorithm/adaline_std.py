@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 from adalineGD import AdalineGD
-from decision_region import decision_region
+from iris_data import decision_region
 
 if __name__ == '__main__':
 
