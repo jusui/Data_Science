@@ -5,7 +5,7 @@ NativeBayes1 test runner
 import numpy as np
 from nbayes1 import NativeBayes1
 
-# load data
+# load data with np.genfromtxt(frame, dtype = <type 'float'>, commnets = '#', delimiter = None)
 data = np.genfromtxt('vote_filled.tsv', dtype = int)
 
 # split data
