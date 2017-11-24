@@ -1,9 +1,68 @@
 import numpy as np
+from abc import ABCMeta, abstractmethod
 
 ## Public Symbols
-__all__ = ['NativeBayes1']
+__all__ = ['NativeBayes1', 'BaseBinaryNativeBayes']
 
-class NativeBayes1(object):
+class BaseBinaryNativeBayes(object, metaclass = ABCMeta):
+    """
+    Abstract Class for Native Bayes whose classes and features are binary.
+    
+    """
+
+    def __init__ (self):
+        """
+        Constractor
+        """
+        self.pY_   = None
+        self.pXgY_ = None
+
+
+    def fit(self, X, y):
+        """
+        Abstract method for fitting model
+        """
+        pass
+
+    def predict(self, X):
+        """
+        Predict class
+
+        Parameters
+        --------------
+        X : array_like, shpae = (n_samples, n_features), dtype = int
+        features values of unseen samples
+
+        Returns
+        --------------
+        y : array_like, shape = (n_samples), dtype = int
+        predicted class labels
+
+        """
+
+        ## constants
+        n_samples = X.shape[0]
+        n_features = X.shape[1]
+
+        ## memory for return values
+        y = np.empty(n_samples, dtype = int)
+
+        ## for each features in X(i:matrix index, xi:matrix element)
+        for i, xi in enumerate(X):
+            ## calc joint probability (pXgY_[j, xi, :]), " : " means getting values(0 & 1)
+            logpXY = (np.log(self.pY_) + \
+                      np.sum(np.log(self.pXgY_[np.arange(n_features), xi, :]), \
+                             axis = 0))
+
+
+            ## Decide and get predict class
+            y[i] = np.argmax(logpXY)
+
+        return y
+
+    
+
+class NativeBayes1(BaseBinaryNativeBayes):
     """
     Native bayes class (1)
     -----------
@@ -20,9 +79,7 @@ class NativeBayes1(object):
         """
         Constructor
         """
-        self.pY_   = None
-        self.pXgY_ = None
-
+        super (NativeBayes1, self).__init__()
 
     def fit(self, X, y):
         """
