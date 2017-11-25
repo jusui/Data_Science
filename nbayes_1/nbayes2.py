@@ -2,7 +2,7 @@ import numpy as np
 from abc import ABCMeta, abstractmethod
 
 ## Public Symbols
-__all__ = ['NaiveBayes1', 'BaseBinaryNaiveBayes']
+__all__ = ['NaiveBayes1', 'NaiveBayes2' , 'BaseBinaryNaiveBayes']
 
 class BaseBinaryNaiveBayes(object, metaclass = ABCMeta):
     """
@@ -125,7 +125,7 @@ class NaiveBayes1(BaseBinaryNaiveBayes):
 
         # calc model parameter self.pXgY_
         self.pXgY_ = np.empty((n_features, n_fvalues, n_classes), dtype = float)
-        for j in range(n_features):
+        for i in range(n_features):
             for xi in range(n_fvalues):
                 for yi in range(n_classes):
                     self.pXgY_[j, xi, yi] = nXY[j, xi, yi] / nY[yi]
@@ -167,4 +167,31 @@ class NaiveBayes1(BaseBinaryNaiveBayes):
 
         return y
     
+class NaiveBayes2(BaseBinaryNaiveBayes):
+    """
+    Naive Bayes class (2)
 
+    """
+
+    def __init__(self):
+        super(NaiveBayes2, self).__init__()
+
+    def fit(self, X, y):
+        n_samples  = X.shape[0]
+        n_features = X.shape[1]
+        n_classes  = 2
+        n_fvalues  = 2
+        
+        # check the size of y
+        if n_samples != len(y):
+            raise ValueError('Mismatched number of samples.')
+
+        # vector nY, yi:Error handling, 
+        # nY = np.zeros(n_classes, dtype = int)
+        # for yi in range(n_classes):
+        #     for i in range(n_samples):
+        #         if y[i] == yi:
+        #             nY[y[i]] += 1
+        
+        nY = np.sum(y == np.arange(n_classes))
+        

@@ -1,11 +1,11 @@
 import numpy as np
 
 ## Public Symbols
-__all__ = ['NativeBayes1']
+__all__ = ['NaiveBayes1']
 
-class NativeBayes1(object):
+class NaiveBayes1(object):
     """
-    Native bayes class (1)
+    Naive bayes class (1)
     -----------
     Attributes
     pY_ : array_like, shape=(n_classes), dtype=float 
@@ -69,7 +69,7 @@ class NativeBayes1(object):
 
         # calc pXgY_
         self.pXgY_ = np.empty((n_features, n_fvalues, n_classes), dtype = float)
-        for i in range(n_features):
+        for j in range(n_features):
             for xi in range(n_fvalues):
                 for yi in range(n_classes):
                     self.pXgY_[j, xi, yi] = nXY[j, xi, yi] / nY[yi]

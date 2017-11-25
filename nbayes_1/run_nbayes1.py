@@ -1,9 +1,9 @@
 """
-NativeBayes1 test runner
+NaiveBayes1 test runner
 
 """
 import numpy as np
-from nbayes1 import NativeBayes1
+from nbayes1 import NaiveBayes1
 
 # load data with np.genfromtxt(frame, dtype = <type 'float'>, commnets = '#', delimiter = None)
 data = np.genfromtxt('vote_filled.tsv', dtype = int)
@@ -14,7 +14,7 @@ y = data[:, -1]
 
 
 # learn model
-clr = NativeBayes1()
+clr = NaiveBayes1()
 clr.fit(X, y)
 
 
