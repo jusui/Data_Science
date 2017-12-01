@@ -38,6 +38,7 @@ print(dframe44)
 dframe55 = dframe22.fillna({0:0, 1:1, 2:2, 3:3})
 print(dframe55)
 
+# None <- dframe22が変更されているから
 dframe66 = dframe22.fillna(0, inplace = True)
 print(dframe66)
 
