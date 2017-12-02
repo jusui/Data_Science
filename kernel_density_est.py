@@ -53,7 +53,3 @@ plt.yticks([])
 plt.suptitle('Sum of the Basis Functions')
 plt.show()
 
-dataset2 = randn(25)
-sns.kdeplot(dataset2)
-
-plt.show()
