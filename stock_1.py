@@ -45,6 +45,11 @@ for ma in ma_day:
 
 print(AAPL.head())
 
+
+"""
+株式市場その2
+"""
+
 ## plot 10, 20, 50 days later
 # 10 から変動が始まる
 AAPL[['Adj Close', 'MA 10', 'MA 20', 'MA 50']].plot(subplots = False, figsize = (10, 4))
@@ -91,4 +96,60 @@ sns.jointplot('GOOG', 'AAPL', tech_rets, kind = 'scatter', color = 'green')
 sns.jointplot('GOOG', 'AMZN', tech_rets, kind = 'scatter', color = 'green')
 
 
+"""
+株式市場その3
+
+4社のデータを比較するplotを考える
+
+"""
+
+sns.pairplot(tech_rets.dropna())
+
+## 前日との比較
+returns_fig = sns.PairGrid(tech_rets.dropna())
+returns_fig.map_upper(plt.scatter, color = 'purple')
+returns_fig.map_lower(sns.kdeplot, cmap = 'cool_d')
+returns_fig.map_diag(plt.hist, bins = 30)
+plt.figure()
+
+## 同様に終値で比較する
+returns_fig = sns.PairGrid(closing_df)
+returns_fig.map_upper(plt.scatter, color = 'purple')
+returns_fig.map_lower(sns.kdeplot, cmap = 'cool_d')
+returns_fig.map_diag(plt.hist, bins = 30)
+plt.figure()
+
+## Heatmap で確認してみる
+# 他社の株価と強く相関している
+sns.heatmap(tech_rets.corr(), annot = True)
+
+
+"""
+株式市場その3
+
+4社のデータを比較するplotを考える
+
+"""
+## 損益の見積もり
+rets = tech_rets.dropna()
+print(rets.head())
+
+# mean(収益) vs. std(リスク)
+plt.scatter(rets.mean(), rets.std(), alpha = 0.5, s = np.pi*20)
+plt.ylim([0.01, 0.025])
+plt.xlim([-0.005, 0.01])
+
+plt.xlabel('Expected returns')
+plt.ylabel('Risk')
+
+## matplotlib に annotation を付ける (ha = horizontal)
+for label, x, y in zip(rets.columns, rets.mean(), rets.std()):
+    plt.annotate(label, xy = (x, y), xytext = (0, 50), \
+                 textcoords = 'offset points', ha = 'right', va = 'bottom',\
+                 arrowprops = dict(arrowstyupe = '-', connectionstyle = 'arc3'))
+
+
+
+
+    
 plt.show()
