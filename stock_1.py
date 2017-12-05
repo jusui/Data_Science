@@ -78,14 +78,14 @@ tech_rets = closing_df.pct_change()
 print(tech_rets.head())
 
 
-## Google同士の相関
+## Google同士の相関 (pearson 相関係数 p = 1)
 sns.jointplot('GOOG', 'GOOG', tech_rets, kind = 'scatter', color = 'green')
 
-## Google vs. MS (pearson 相関係数 p = 1)
+## Google vs. MS 
 sns.jointplot('GOOG', 'MSFT', tech_rets, kind = 'scatter', color = 'green')
 
 ## Google vs. Apple (pearson 相関係数 p = 1)
-sns.jointplot('GOOG', 'APPL', tech_rets, kind = 'scatter', color = 'green')
+sns.jointplot('GOOG', 'AAPL', tech_rets, kind = 'scatter', color = 'green')
 
 ## Google vs. Amazon (pearson 相関係数 p = 1)
 sns.jointplot('GOOG', 'AMZN', tech_rets, kind = 'scatter', color = 'green')
