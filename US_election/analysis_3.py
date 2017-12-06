@@ -56,14 +56,14 @@ top_donor = top_donor[top_donor > 0]
 top_donor.sort()
 
 # 寄付額 Top10
-print('寄付額 Top10{:0.2f}'.format(top_donor.value_counts().head(10)))
+top_donor.value_counts().head(10)
+print('寄付額Top10は，{}'.format(top_donor))
 
 # histogram(10 < $ < 2500)
 com_don = top_donor[top_donor < 2500]
 
-# Change binning (bins = 100)
+# Histogram with binning (bins = 100)     
 com_don.hist(bins = 100)
-plt.figure()
 
 plt.show()
 
