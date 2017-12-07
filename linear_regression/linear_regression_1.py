@@ -99,7 +99,7 @@ plt.plot(boston_df.RM, boston_df.Price, 'o')
 # 求めた回帰直線を描く
 x = boston_df.RM
 plt.plot(x, a*x+b, 'r')
-
+plt.figure()
 
 result = np.linalg.lstsq(X, Y)
 print(result)
@@ -112,9 +112,98 @@ rmse = np.sqrt( error_total / len(X) )
 print('平均二乗誤差の平方根 = {:0.2f}'.format(rmse[0]))
 # 最小二乗誤差は，標準偏差に対応するので 95%の確率で，この値の2倍( 6.60*2 = +-13.2 )以上に誤差が広がることはないと結論
 
-import sklean
+import sklearn
 from sklearn.linear_model import LinearRegression
 
 lreg = LinearRegression()
+
+X_multi = boston_df.drop('Price', 1)
+print(X_multi.shape)
+
+Y_target = boston_df.Price
+
+# fit() で Model を作る
+lreg.fit(X_multi, Y_target)
+### LinearRegression(copy_X = True, fit_intercept = True, n_jobs = 1, normalize = False)
+
+# 切片の値を見る
+print('切片の値 = {:0.2f}'.format(lreg.intercept_))
+# 係数の値
+print('係数の値 = {:0.2f}'.format(len(lreg.coef_)))
+
+# 単回帰のときは，直線なので，係数a と切片bは，1つのみ.
+# 今回は，lregcoef_ = 13ある -> 13個変数がある方程式であることを意味する
+
+# 係数を見ていく
+# 新しいDF
+coeff_df = DataFrame(boston_df.columns)
+coeff_df.columns = ['Features']
+
+# 求められた係数を代入
+coeff_df['Coefficient Estimate'] = pd.Series(lreg.coef_)
+print(coeff_df)
+# -> RM の係数が最も大きい
+
+"""
+
+Step 7: 学習（Training）と検証（Validation)
+
+
+"""
+
+# 説明変数X, 目的変数Yと定義
+X_train, X_test, Y_train, Y_test = sklearn.cross_validation.train_test_split(X_multi, boston_df.Price)
+
+# Split したデータセット
+print(X_train.shape, X_test.shape, Y_train.shape, Y_test.shape)
+
+
+"""
+
+Step 8: 価格の予測
+
+
+"""
+# 学習用データで，モデルを作り，残りのデータで住宅価格を予測する
+# インスタンス
+lreg = LinearRegression()
+
+# fit でmodel作り，学習用にかませる
+lreg.fit(X_train, Y_train)
+
+# 予測を，学習用データと，テスト用データ，両方で試してみる
+pred_train = lreg.predict(X_train)
+pred_test  = lreg.predict(X_test)
+
+# それぞれの平均二乗誤差を計算してみる
+print('X_trainを使ったモデルの平均二乗誤差 = {:0.2f}'.format(np.mean((Y_train - pred_train) ** 2)))
+
+print('X_testを使ったモデルの平均二乗誤差 = {:0.2f}'.format(np.mean((Y_test - pred_test) ** 2)))
+
+# X_trainでつくったモデルなので，X_testデータを使ってYを計算すると，実際の値からのズレが大きくなる
+
+
+"""
+
+Step 9 : 残差プロット
+
+回帰分析では，実際に観測された値と，モデルが予測した値の差を残差と呼ぶ
+
+残差 = 観測された値 - 予測された値
+
+"""
+
+# 学習用データの残差プロット
+train = plt.scatter(pred_train, (pred_train - Y_train), c = 'b', alpha = 0.5)
+
+# テスト用データの残差プロット
+test = plt.scatter(pred_test, (pred_test - Y_test), c = 'r', alpha = 0.5)
+
+# 残差の基準線 y = 0
+plt.hlines(y = 0, xmin = -10, xmax = 50)
+
+plt.legend((train, test), ('Training', 'Test'), loc = 'lower left')
+
+plt.title('Residual Plots')
 
 plt.show()
