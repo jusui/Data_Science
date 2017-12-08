@@ -45,11 +45,13 @@ plt.ylabel('Number of rooms')
 
 # DataFrameを作る
 boston_df = DataFrame(boston.data)
+print(boston_df)
 
 # 列名を付ける (feature_names は，列名を格納した変数)
 boston_df.columns = boston.feature_names
 print(boston_df.head())
 
+# Price カラムを作成
 boston_df['Price'] = boston.target
 print(boston_df.head())
 
@@ -112,14 +114,29 @@ rmse = np.sqrt( error_total / len(X) )
 print('平均二乗誤差の平方根 = {:0.2f}'.format(rmse[0]))
 # 最小二乗誤差は，標準偏差に対応するので 95%の確率で，この値の2倍( 6.60*2 = +-13.2 )以上に誤差が広がることはないと結論
 
+
+"""
+
+Step 6: scikit-learnを使った重回帰分析
+
+
+lreg.fit() はデータを元にモデルを作ります。
+lreg.predict() は作られたモデルを元に、予測値を返します。
+lreg.score()は、決定係数を返します。 
+決定係数は、説明変数でどれくらいうまく目的変数の値を説明出来ているかの指標になります。
+
+
+"""
 import sklearn
 from sklearn.linear_model import LinearRegression
-
+# LinearRegression class Instance
 lreg = LinearRegression()
 
+# 説明変数
 X_multi = boston_df.drop('Price', 1)
 print(X_multi.shape)
 
+# 目的変数(Price)
 Y_target = boston_df.Price
 
 # fit() で Model を作る
@@ -137,12 +154,14 @@ print('係数の値 = {:0.2f}'.format(len(lreg.coef_)))
 # 係数を見ていく
 # 新しいDF
 coeff_df = DataFrame(boston_df.columns)
+# カラム名を Features に定義
 coeff_df.columns = ['Features']
 
-# 求められた係数を代入
+# 求められた係数をカラムに追加
 coeff_df['Coefficient Estimate'] = pd.Series(lreg.coef_)
 print(coeff_df)
 # -> RM の係数が最も大きい
+
 
 """
 
