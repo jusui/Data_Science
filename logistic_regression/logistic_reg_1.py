@@ -106,7 +106,7 @@ plt.figure()
 # 学歴では
 sns.countplot('educ', data = df.sort('educ'), hue = 'Had_Affair', \
               palette = 'coolwarm')
-# plt.figure()
+plt.figure()
 # 相関は確認できない
 
 
@@ -155,5 +155,30 @@ Y = Y.values
 print(Y)
 
 
+
+# Part 7: ScikitLearnを使ったロジスティック回帰
+log_model = LogisticRegression()
+
+# Data でModel作成
+log_model.fit(X, Y)
+
+# model 精度の確認 : score()
+log_score = log_model.score(X, Y)
+print(log_score)
+print('係数 = {:}'.format(log_model.coef_[0]))
+
+# 実際の目的変数Y の平均値. np.array 型なので, 
+print(Y.mean())
+print('不倫していない確率は= {:0.2f}'.format(1 - Y.mean()))
+
+# どの変数が予測に寄与しているか
+# 変数名と係数を格納するDFを作る
+# 縦にarray を展開したいので，(.T)で転地する
+coeff_df = DataFrame([X.columns, log_model.coef_[0]]).T
+print(coeff_df)
+
+# 正だと下がる，負だと上がる
+sns.countplot('occ6', data = coeff_df, palette = 'coolwarm')
+# plt.figure()
 
 plt.show()
