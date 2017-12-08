@@ -139,6 +139,10 @@ print(X.head())
 Y = df.Had_Affair
 print(Y.head())
 
+sns.countplot('occ6', data = X.sort('occ6'), palette = 'coolwarm')
+
+
+
 
 # Part 6: 多重共線性
 # Dummy 変数同士は，高度に相関する可能性があるため，
@@ -178,7 +182,26 @@ coeff_df = DataFrame([X.columns, log_model.coef_[0]]).T
 print(coeff_df)
 
 # 正だと下がる，負だと上がる
-sns.countplot('occ6', data = coeff_df, palette = 'coolwarm')
-# plt.figure()
+
+
+
+# Part 8: 学習とテスト
+# trian_test_split
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y)
+
+# 新しいモデルを作る
+log_model2 = LogisticRegression()
+
+# 学習用のデータでモデルをトレーニングする
+log_model2.fit(X_train, Y_train)
+
+# テスト用データで，予測する
+class_predict = log_model2.predict(X_test)
+
+# 精度
+print("精度は")
+print(metrics.accuracy_score(Y_test, class_predict))
+
+# plot_decision_regions(X_tarin, Y_train, classifier = log_model2, test_idx = range(105, 150))
 
 plt.show()
