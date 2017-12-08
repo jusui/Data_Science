@@ -152,7 +152,7 @@ print(metrics.accuracy_score(Y_test, Y_pred))
 
 
 # k を変化させてみる (1 < k < 90), (odd < k < even) など区間長が偶数でないとError 
-k_range = range(1, 90)
+k_range = range(1, 50)
 print(k_range)
 
 accuracy = []
@@ -164,6 +164,8 @@ for k in k_range:
     Y_pred = knn.predict(X_test)
     # 計算した精度を配列accuracy に append() する
     accuracy.append(metrics.accuracy_score(Y_test, Y_pred))
+
+    print(max(metrics.accuracy_score(Y_test, Y_pred)))
 
 # Plotする
 plt.plot(k_range, accuracy)
