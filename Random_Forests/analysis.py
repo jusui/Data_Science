@@ -119,7 +119,7 @@ Random Forest
 
 from sklearn.ensemble import RandomForestClassifier
 
-# n_estimatorsは，作る木の数
+# インスタンスを作る. n_estimatorsは，作る木の数
 clf = RandomForestClassifier(n_estimators = 100, random_state = 0)
 
 # 境界線を描かないようにする
@@ -141,7 +141,7 @@ x = 10 * np.random.rand(100)
 
 def sin_model(x, sigma = 0.2):
     '''
-    大きな波 + 小さな波 + ノイズから成るダミーデータ
+    (大きな波 + 小さな波 + ノイズ) から成るダミーデータ
     '''
 
     noise = sigma * np.random.randn(len(x))
@@ -150,6 +150,7 @@ def sin_model(x, sigma = 0.2):
 
 # x から yを計算
 y = sin_model(x)
+print(y)
 
 # plot
 plt.figure(figsize = (16, 8))
@@ -160,7 +161,7 @@ plt.errorbar(x, y, 0.1, fmt = 'o')
 # このデータを単純な線形回帰で予測しようとしても難しいのは、一目瞭然です。 
 #そこで、ランダムフォレストを使って見ることにしましょう。 
 
-# X
+# X, np.linspace() : 線形に等間隔な数列を生成する
 xfit = np.linspace(0, 10, 1000)
 
 # 回帰モデル
