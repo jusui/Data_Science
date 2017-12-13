@@ -138,6 +138,8 @@ Random Forest Regression
 from sklearn.ensemble import RandomForestRegressor
 
 x = 10 * np.random.rand(100)
+print("x")
+print(x)
 
 def sin_model(x, sigma = 0.2):
     '''
@@ -162,6 +164,7 @@ plt.errorbar(x, y, 0.1, fmt = 'o')
 #そこで、ランダムフォレストを使って見ることにしましょう。 
 
 # X, np.linspace() : 線形に等間隔な数列を生成する
+# https://deepage.net/features/numpy-linspace.html
 xfit = np.linspace(0, 10, 1000)
 
 # 回帰モデル
