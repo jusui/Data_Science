@@ -1,4 +1,4 @@
-# encoding uft-8
+# encoding utf-8
 import numpy as np
 import pandas as pd
 from pandas import Series, DataFrame
@@ -65,18 +65,17 @@ sns.lmplot('RM', 'Price', boston_df)
 
 最小二乗法の数学的な背景
 
-二乗なのは，基準点からの方向に依らず絶対値を距離として見るため
+二乗にする理由は，基準点からの方向に依らず絶対値を距離として見るため
 
 http://mathtrain.jp/seikiequ
 
 """
 
-# numpy で単回帰
-# 部屋数
+# numpy で単回帰 (RM = 部屋数)
 X = boston_df.RM
 print(X.shape)
 
-# 2-D array にする必要があるため，np.vstack() を使う
+# 2-D array に形成するため，np.vstack() を使う
 X = np.vstack(boston_df.RM)
 print(X.shape)
 
