@@ -16,11 +16,12 @@ Lec.44
 various function
 
 """
-
+# 2次関数
 y_2 = x**2 - 10 * x + 10
 plt.plot(x, y_2)
 # plt.figure()
 
+# 3次関数
 y_3 = x**3 - 10 * x**2 - 10 * x + 10
 plt.plot(x, y_3)
 plt.figure()
@@ -54,22 +55,18 @@ print(e)
 
 dx = 0.1
 x_22 = np.arange(-5, 5, dx)
-y_4
-y_4 = 2**xx
-y_e = e**y
+print(x_22)
+print(x_22.shape)
+
+y_4 = 2**x_22
+y_e = e**x_22
 y_33 = 3**x_22
 
+# xの傾きがdxの場合
+y_de = (e**(x_22 + dx) - e**x_22) / dx
+print(y_de.shape)
 
-y = (e^dx) - e^xlllllllllllll
-y_de.plot(e**(x + dx) - e** x / dx)
-# y_de = (e**[x+dx] - e**x) / dx
-
-plt.plot(x_22, y_4)
 plt.plot(x_22, y_e)
-plt.plot(x_22, y_33)
-plt.plot(x, y_2)
-plt.figure(Congraturation)
-
-plt.plot(x_22. y_e)
+plt.plot(x_22, y_de)
 
 plt.show()
