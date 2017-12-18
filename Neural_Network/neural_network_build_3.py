@@ -29,7 +29,12 @@ class Neuron:
         self.input_sum = 0
         self.output = 0
 
-""" NeuralNetwork class"""
+""" 
+NeuralNetwork class
+多層にチャレンジしたいが，そもそもsigmoid関数では，多層にできない問題がある
+中間層にReLU 関数を利用したい.
+
+"""
 class NeuralNetwork:
     # Weight [[input1, input2, bias]]
     w_im = [[0.496, 0.512], [-0.501, 0.998], [0.498, -0.502]] # (3 * 2)入力層[0,1,2] - 中間層①[0, 1, 2]
