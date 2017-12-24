@@ -2,7 +2,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import norm
+from  matplotlib.font_manager import FontProperties
+fp = FontProperties(fname=r'/Library/fonts/ipag.ttf', size=11)
 
+"""
+matplotlib.pyplot lect
+
+"""
 x = np.arange(-3, 3, 0.001)
 
 # norm.pdf(x, mean, std)
@@ -20,6 +26,7 @@ axes.set_yticks([0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0])
 axes.grid() # Grid
 plt.xlabel("Greebles")
 plt.ylabel("Probability")
+plt.title("PDF", fontproperties = fp)
 plt.plot(x, norm.pdf(x), 'b-') # b:blea, -:line
 plt.plot(x, norm.pdf(x, 1, 0.5), 'r:') # r:red, ":" : dashed
 plt.legend(['Shhetches', 'Gacks'], loc = 4)
@@ -34,7 +41,7 @@ plt.figure()
 plt.rcdefaults()
 values = [12, 55, 4, 32, 14]
 colors = ['r', 'g', 'b', 'c', 'm']
-explode = [0, 0, 0.2, 0, 0] # 隙間
+explode = [0, 0, 0.2, 0, 0] # 隙間の大きさ
 labels = ['India', 'US', 'Russia', 'China', 'Europe']
 plt.pie(values, colors = colors, labels = labels, explode = explode)
 plt.title("student locations")
@@ -45,6 +52,7 @@ plt.figure()
 values = [12, 55, 4, 32, 14]
 colors = ['r', 'g', 'b', 'c', 'm']
 plt.bar(range(0, 5), values, color = colors)
+plt.title("Bar chart", fontproperties = fp)
 plt.figure()
 
 
@@ -53,18 +61,23 @@ from pylab import randn
 X = randn(500)
 Y = randn(500)
 plt.scatter(X, Y)
+plt.title("scatter plot with random value", fontproperties = fp)
 plt.figure()
+
 
 # Histogram
 incomes = np.random.normal(27000, 10000, 10000)
 plt.hist(incomes, 50)
+plt.title("Histogram", fontproperties = fp)
 plt.figure()
+
 
 # 箱ひげ図
 uniformSkewed = np.random.rand(100) * 100 - 40
 high_outliers = np.random.rand(10) * 50 + 100
 low_outliers  = np.random.rand(10) * (-50) -100
 data = np.concatenate((uniformSkewed, high_outliers, low_outliers))
+plt.title("箱ひげ図", fontproperties = fp)
 plt.boxplot(data)
 
 plt.show()
