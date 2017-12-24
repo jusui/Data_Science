@@ -13,6 +13,9 @@ np.polyfit(x, y, 次数)
 np.poly1d(np.polyfit(x, y, 1))
 1次なら，a, bを元に関数を生成.
 
+http://ailaby.com/least_square/#id1
+https://docs.scipy.org/doc/numpy/reference/generated/numpy.polyfit.html
+
 """
 np.random.seed(2)
 pageSpeeds = np.random.normal(3.0, 1.0, 1000)
