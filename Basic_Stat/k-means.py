@@ -4,6 +4,10 @@ from numpy import random, array
 """
 clustering した収入と年齢のランダムなFake data
 
+[KMeans]
+http://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html
+[numpy.random.uniform]
+https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.random.uniform.html
 """
 # create fake income/age clusters for N people in k clusters
 def createClusteredData(N, k):
