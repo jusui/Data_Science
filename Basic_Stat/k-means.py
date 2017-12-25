@@ -31,11 +31,13 @@ import matplotlib.pyplot as plt
 from sklearn.preprocessing import scale
 from numpy import random, float
 
+k = 5
 # 100 人-> 5 Cluster
-data = createClusteredData(100, 5)
+data = createClusteredData(100, k)
+print("data = ", data)
 
 # KMeans(5)
-model = KMeans(n_clusters = 5)
+model = KMeans(n_clusters = k)
 
 # Note I'm scaling the data to normalize it! Important for good results.
 model = model.fit(scale(data))
