@@ -8,6 +8,10 @@ clustering した収入と年齢のランダムなFake data
 http://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html
 [numpy.random.uniform]
 https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.random.uniform.html
+
+[Kernel 近似(クラス分類)]
+http://neuro-educator.com/ml9/
+
 """
 # create fake income/age clusters for N people in k clusters
 def createClusteredData(N, k):
