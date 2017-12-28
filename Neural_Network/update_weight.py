@@ -37,6 +37,7 @@ def sigmoid_der(x):
 
 
 if __name__ == '__main__':
+ 
     x = np.array([2, 3, 4, 5])
     w = np.array([0.4, -0.4, 0.3, 0.2])
     y = np.array(0.4)
@@ -50,16 +51,21 @@ if __name__ == '__main__':
     # δ: 誤差項(Error term)
     error_term = error * sigmoid_der(h)
     del_w = eta * error_term * x
+
+
     print('Output:')
     print(h)
 
     print("Error:")
     print(error)
-
+        
     print("delta_w:")
     print(del_w)
 
-    print("weight = ", w)
+    j = 0
+    for i in range(10):
+        j += 1
+        print(j, "th loop")
+        print("weight = ", w)
+        print("w + del_w = ", w + del_w)
 
-    print("w + del_w = ", w + del_w)
-    
