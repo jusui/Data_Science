@@ -166,5 +166,4 @@ if __name__ == '__main__':
 
     print(identity_matrix)
 
-    make_graph_dot_product_as_vector_projection()
-#    make_graph_dot_product_as_vector_projection(friendships)
+#    make_graph_dot_product_as_vector_projection(plt)
