@@ -42,8 +42,28 @@ if find == False:
     print(str(num) + "=root*pwr と一致するroot, pwrはありません.")
     
 
+"""
+平方根の近似値を求める
+"""
+x = 25
+epsilon = 0.01
+step = epsilon ** 2
+numGuess = 0
+wna = 0.0
+while(abs** 2 -x ) >= epsiolon and ans <= x:
+    ans += step
+    numGuesss += 1
 
-""" Newton-Raphson method """
+print('numGuess =', numGuess)
+if abs(ans**2 - x) >= epsilon:
+    print('Failed on square root of', x)
+
+else:
+    print(ans, 'is close to square root of' , x)
+
+
+
+""" [P.]Newton-Raphson method """
 # x**2 - 24 = 0 で誤差が，epsilon 以下になるx を求める
 epsilon = 0.01
 k = 24.0
