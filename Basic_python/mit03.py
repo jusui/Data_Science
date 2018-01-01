@@ -50,7 +50,7 @@ epsilon = 0.01
 step = epsilon ** 2
 numGuess = 0
 wna = 0.0
-while(abs** 2 -x ) >= epsiolon and ans <= x:
+ while(abs** 2 -x ) >= epsiolon and ans <= x:
     ans += step
     numGuesss += 1
 
