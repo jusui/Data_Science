@@ -41,3 +41,15 @@ while pwr < 6: # 1 < pwr < 6
 if find == False:
     print(str(num) + "=root*pwr と一致するroot, pwrはありません.")
     
+
+
+""" Newton-Raphson method """
+# x**2 - 24 = 0 で誤差が，epsilon 以下になるx を求める
+epsilon = 0.01
+k = 24.0
+guess = k / 2.0
+
+while abs(guess * guess - k) >= epsilon:
+    guess = guess - ( ((guess ** 2) - k ) / (2 * guess) )
+print('Square root of ', k, 'is about', guess)
+
