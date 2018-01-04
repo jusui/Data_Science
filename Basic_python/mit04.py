@@ -91,7 +91,25 @@ def factR(n):
         return n*factR(n - 1)
     
 
+
+def fib(n):
+    """ 
+    n > 0 (int n)と仮定，n番目のフィボナッチ数列を返す 
+    """
+    if n == 0 or n == 1:
+        return 1
+    else:
+        return fib(n-1) + fib(n-2)
+
+def testFib(n):
+    for i in range(n+1):
+        print('fib of', i, '=', fib(i))
+    
+    
 if __name__ == '__main__':
     testFindRoot()
     print(factI(5))
     print(factR(5))
+
+    n = 6
+    testFib(n)
