@@ -35,8 +35,55 @@ second_smallest_value = sorted_values[1]   # 1
 second_largest_value = sorted_values[-2]   # 49
 
 
+""" 
+平均(mean)
+"""
+# this isn't right if yout don't fro __future__ import division
+def mean(x):
+    return sum(x) / len(x)
+
+
+"""
+中央値(median)
+"""
+def median(v):
+    """ finds the 'middle-most' value of v """
+    n = len(v)
+    sorted_v = sorted(v)
+    midpoint = n // 2
+
+    if n % 2 == 1:
+        # if odd, return the middle value
+        return sortd_v[midpoint]
+    else:
+        # if even , return the average of the middle values
+        lo = midpoint - 1
+        hi = midpoint
+        return (sorted_v[lo] + sorted_v[hi]) / 2
+    
+
+"""
+度数(quantile)
+"""
+def quantile(x, p):
+    """ returns the pth-percentile value in x """
+    p_index = int(p * len(x))
+    return sorted(x)[p_index]
+
+
+
 
 
 if __name__ == '__main__':
     make_friends_counts_histogram(plt)
 
+    print("num_points", len(num_friends))
+    print("largest value", max(num_friends))
+    print("smallest value", min(num_friends))
+    print("second_smallest_value", sorted_values[1])
+    print("second_largest_value", sorted_values[-1])
+    print("mean(num_friends)", mean(num_friends))
+    print("median(num_friends)", median(num_friends))
+    print("quantile(num_friends, 0.10)", quantile(num_friends, 0.10))
+
+    
