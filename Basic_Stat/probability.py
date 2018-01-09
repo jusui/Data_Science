@@ -79,6 +79,8 @@ def bernoulli_trial(p):
 
 
 def binomial(p, n):
+    # 使わない返り値に変数を割り当てるのはナンセンス->アンダースコアで無視
+    # 代入はされども参照されない変数には _ もしくは、dummy という変数名を使うことが多い
     return sum(bernoulli_trial(p) for _ in range(n))
 
 
@@ -87,9 +89,10 @@ def make_hist(p, n, num_points):
     data = [binomial(p, n) for _ in range(num_points)]
 
     # use a bar chart to show the actual binomial samples
+    # https://qiita.com/hatchinee/items/a904c1f8d732a4686c9d
     histogram = Counter(data)
-    plt.bar([ x - 0.4 for x in histogram.keys() ],
-            [ v / num_points for v in histogram.values() ],
+    plt.bar([ x - 0.4 for x in histogram.keys() ], # get key
+            [ v / num_points for v in histogram.values() ], # get value
             0.8,
             color = '0.75')
 
