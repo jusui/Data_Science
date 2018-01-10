@@ -75,12 +75,21 @@ def inverse_normal_cdf(p, mu = 0, sigma = 1, tolerance = 0.00001):
 
 
 def bernoulli_trial(p):
+    """
+    2種類の可能な結果(S, F)を観測し，それらの確率をp, 1-pとする．
+    n回(S:x回, F:n-x回)繰り返す. 
+    f(x) = nCx * p^x * (1-p)^n-x
+    """
     return 1 if random.random() < p else 0
 
 
 def binomial(p, n):
-    # 使わない返り値に変数を割り当てるのはナンセンス->アンダースコアで無視
-    # 代入はされども参照されない変数には _ もしくは、dummy という変数名を使うことが多い
+    """
+    使わない返り値に変数を割り当てるのはナンセンス->アンダースコアで無視
+    代入はされども参照されない変数には _ もしくは，dummy という変数名を使う
+    E(x) = np
+    V(x) = np(1-p)
+    """
     return sum(bernoulli_trial(p) for _ in range(n))
 
 
@@ -137,5 +146,6 @@ if __name__ == '__main__':
     plot_normal_cdfs(plt)
 
 
-    make_hist(0.75, 100, 100000)
+#    make_hist(0.75, 100, 100000)
+    make_hist(0.2, 5, 10000)
     

@@ -1,8 +1,0 @@
-日曜日：24時前
-Lec56 -
-https://www.udemy.com/python-jp/learn/v4/t/lecture/3830170?start=0
-
-Titanic号ののデータで練習
-データの可視化，年齢分布などを確認。
-3等クラスが最も多い。当たり前だけど。
-
