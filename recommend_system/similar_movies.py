@@ -39,7 +39,8 @@ print(similarMovies.sort_values(ascending = False)) # 現時点で類似度の�
 """
 (2).少数の特異な評点を削除して再度,見積もる
 
-
+groupby.agg()
+https://qiita.com/kyo-bad/items/f5ddb7e4b8e7ad9103c5#groupbyagg
 """
 import numpy as np
 
