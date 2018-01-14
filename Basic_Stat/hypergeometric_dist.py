@@ -1,6 +1,9 @@
 # coding:utf-8
 import matplotlib.pyplot as plt
 # from binomial import factorial
+"""
+[MIT_DS:chap.7]
+"""
 
 def factorial(n):
     if ( n == 0 or n == 1 ):
