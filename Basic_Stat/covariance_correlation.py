@@ -5,7 +5,6 @@ from pylab import *
 from  matplotlib.font_manager import FontProperties
 fp = FontProperties(fname=r'/Library/fonts/ipag.ttf', size=11)
 
-
 """
 共分散(covariance)と相関(correlation)
 共分散は，二つのデータセット間の関係を表す数値.
@@ -14,6 +13,7 @@ fp = FontProperties(fname=r'/Library/fonts/ipag.ttf', size=11)
 例として、販売サイトの運営時、サイトの表示速度とユーザーの消費金額の関係を調べよう.
 
 """
+
 
 # 平均値からのズレ
 def de_mean(x):

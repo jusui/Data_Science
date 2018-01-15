@@ -12,20 +12,17 @@ Hypothesis and inference
 """
 
 
-# [e.f.]コイン投げ
+#####
+# [コイン投げ]
+# コインをn回投げて，表位が出た回数Xを数える．
+# 各コイン投げは，ベルヌーイ試行に相当し，XはBinomial(n, p)の確率変数
+#####
 def normal_approximation_to_binomial(n, p):
     """ Binomial(n, p)に相当するmu, sigmaを計算する"""
     mu = p * n
     sigma = math.sqrt(p * (1 - p) * n)
     return mu, sigma
 
-#####
-# コインをn回投げて，表位が出た回数Xを数える．
-# 各コイン投げは，ベルヌーイ試行に相当し，XはBinomial(n, p)の確率変数
-#####
-
-
-# the normal cdf _is_ the probability the variable is below a threshold
 # 変数が閾値を下回る確率はnormal_cdfで表現できる
 normal_probability_below = normal_cdf
 
