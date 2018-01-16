@@ -6,9 +6,10 @@ from  matplotlib.font_manager import FontProperties
 fp = FontProperties(fname=r'/Library/fonts/ipag.ttf', size=11)
 
 """
-共分散(covariance)と相関(correlation)
+[udemy]
+chap.15 共分散(covariance)と相関(correlation)
 共分散は，二つのデータセット間の関係を表す数値.
-(*)相関は，データ間の因果関係を意味するわけではない.
+*相関は，データ間の因果関係を意味するわけではない.
 
 例として、販売サイトの運営時、サイトの表示速度とユーザーの消費金額の関係を調べよう.
 
@@ -28,9 +29,9 @@ def covariance(x, y):
 
 # 全くランダムで無関係な表示速度と購入合計額のデータセットをそれぞれ用意
 pageSpeeds = np.random.normal(3.0, 1.0, 1000)
-print(pageSpeeds)
+# print("pageSpeeds =", pageSpeeds)
 purchaseAmount = np.random.normal(50.0, 10.0, 1000)
-print(purchaseAmount)
+# print("purchaseAmount =", purchaseAmount)
 
 plt.scatter(pageSpeeds, purchaseAmount)
 plt.title("covariance")

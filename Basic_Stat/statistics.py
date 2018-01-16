@@ -16,29 +16,16 @@ num_friends = [100,49,41,40,25,21,21,19,19,18,18,16,15,15,15,15,14,14,13,13,13,1
 
 def make_friends_counts_histogram(plt):
     friend_counts = Counter(num_friends)
-    xs = range(101)                       # largest value is 100
-    print("xs =", xs)
-    ys = [friend_counts[x] for x in xs]   # height is just # of friends 
-    print("ys =", ys)
+    xs = range(101)                       # 知り合いの数は最大100
+    print("xs[# of friends] =", xs)
+    ys = [friend_counts[x] for x in xs]   # 縦軸は知り合いの数
+    print("ys[# of people] =", ys)
     plt.bar(xs, ys)
     plt.axis([0, 101, 0, 25])
     plt.title("Histogram of Friend Counters")
     plt.xlabel("# of friends")
     plt.ylabel("# of people")
     plt.show()
-
-
-num_points = len(num_friends) # 204
-print(num_points)
-largest_value = max(num_friends) # 100
-print(largest_value)
-smallest_value = min(num_friends) # 1
-print(smallest_value)
-
-sorted_values = sorted(num_friends)
-smallest_value = sorted_values[0]          # 1
-second_smallest_value = sorted_values[1]   # 1
-second_largest_value = sorted_values[-2]   # 49
 
 
 """ 
@@ -68,7 +55,7 @@ def median(v):
     
 
 """
-度数(quantile)
+分位数(quantile):中央値を一般化したもの
 """
 def quantile(x, p):
     """ returns the pth-percentile value in x """
@@ -77,10 +64,10 @@ def quantile(x, p):
 
 
 """
-モード(mode)
+最頻値(mode)
 """
 def mode(x):
-    """ returns a list, might be more than one mode """
+    """ モードは1つとは限らないため，リストを返す """
     counts = Counter(x)
     max_count = max(counts.values())
     # countsに対するイテレータを返す 
@@ -90,7 +77,7 @@ def mode(x):
 
 
 """
-範囲(range)
+散らばり(range)
 """
 # "range" already means something in Python, so we'll use a different name
 def data_range(x):
@@ -117,7 +104,7 @@ def variance(x):
 
 
 """
-標準偏差(std)
+標準偏差(standard deviation)
 """
 def standard_deviation(x):
     return math.sqrt(variance(x))
@@ -151,6 +138,10 @@ def correlation(x, y):
     else:
         return 0 # if no variation, correlation is zero
 
+
+"""
+相関関係のplotを見ると100人の知り合いがいるユーザが外れ値になっているため，除外してデータを作り直す
+"""
 outlier = num_friends.index(100) # index of outlier
 
 num_friends_good = [x for i, x in enumerate(num_friends)
@@ -165,11 +156,13 @@ daily_minutes_good = [x for i, x in enumerate(daily_minutes)
 if __name__ == '__main__':
     make_friends_counts_histogram(plt)
 
-    print("num_points", len(num_friends))
-    print("largest value", max(num_friends))
-    print("smallest value", min(num_friends))
-    print("second_smallest_value", sorted_values[1])
-    print("second_largest_value", sorted_values[-1])
+    print("num_points", len(num_friends)) # 204
+    print("largest value", max(num_friends))  # 100
+    print("smallest value", min(num_friends)) # 1
+    sorted_values = sorted(num_friends)
+    print("smallest_value =", sorted_values[0]) # min = 1
+    print("second_smallest_value", sorted_values[1]) # 1
+    print("second_largest_value", sorted_values[-1]) # 49
     print("mean(num_friends)", mean(num_friends))
     print("median(num_friends)", median(num_friends))
     print("quantile(num_friends, 0.10)", quantile(num_friends, 0.10))
