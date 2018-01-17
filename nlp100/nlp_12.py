@@ -29,6 +29,7 @@ def write_col(source_line, column_number, filename):
         
 with open(sys.argv[1]) as f:
     lines = f.readlines()
+    print(lines)
 
 write_col(lines, 0, "col1.txt")        
 write_col(lines, 1, "col2.txt")
