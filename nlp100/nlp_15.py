@@ -2,7 +2,7 @@
 """
 nlp100
 nlp_15.py
-usage:
+usage:python nlp_16.py hightemp.txt 3
 
 15. 末尾のN行を出力
 
