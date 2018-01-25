@@ -62,7 +62,7 @@ from extract_text import extract_text
 from pprint import pprint
 
 def extract_base_info(text):
-    # 改行文字に対してもマッチさせる代替モード (re.DOTALL)
+    # (re.DOTALL:改行文字に対してもマッチ), [^5]='5'以外の文字とマッチ
     m = re.search("{{基礎情報[^|]+\|(?P<info_body>.+?)\n}}", text, re.DOTALL)
     if not m:
         return {}
