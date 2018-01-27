@@ -80,7 +80,9 @@ class ThreeLayerNet:
         grads['b3'] = np.sum(dy, axis=0)
 
 #        da2 = np.dot(dy, W3.T)
-        da2 = np.dot(W2, W3)
+#        da2 = np.dot(W2, W3)
+#        da2 = np.dot(W2, z2.T)
+        da2 = np.dot(z2, W2.T)
         dz2 = sigmoid_grad(a2) * da2
 #        grads['W2'] = np.dot(z1.T, dz2)
         grads['W2'] = np.dot(z1.T, dz2)        
