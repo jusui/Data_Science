@@ -7,6 +7,8 @@ class NeuralNetwork:
 
     weight : wij(ith to jth layer)
     (e.f.) wih(input - hidden), who(hidden - output)
+    eta : learning rate
+    
     """
 
     def __init__(self, inlayer, hilayer, outlayer, eta):
@@ -109,9 +111,12 @@ if __name__ == "__main__":
         # answer label
         answer_label = int(value[0])
         # print(answer_label, "answer_label")
-        # scaling & shift
+
+        # scaling & shift, inputs.shape = [0, 0, ...]
         inputs  = (np.asfarray(value[1:]) / 255.0 * 0.99) + 0.01
-        outputs = NN.query(inputs)
+        #  print("inputs :", inputs)
+        outputs = NN.query(inputs) # (2, 1)transpose to vertical 
+        # print("outputs :", outputs)
         label = np.argmax(outputs)
         print(label, "network's answer")
 
@@ -128,6 +133,3 @@ if __name__ == "__main__":
 
     score_array = np.asarray(score)
     print("acc =", score_array.sum() / score_array.size)
-        
-        
-    
