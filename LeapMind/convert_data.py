@@ -2,30 +2,32 @@
 import numpy as np
 
 def convert_CSV(image, label, output, dim):
-    f = open(image, 'rb')
-    o = open(output, 'w')
-    l = open(label, 'rb')
+    image_file = open(image, 'rb')
+    writer = open(output, 'w')
+    labels = open(label, 'rb')
 
-    f.read(16)
-    l.read(8)
+    image_file.read(16)
+    print(image_file)
+    labels.read(8)
+    print(labels)
+    
     images = []
-
     for i in range(dim):
-        image = [ord(l.read(1))]
+        image = [ord(labels.read(1))]
         for j in range(28*28):
-            image.append(ord(f.read(1)))
+            image.append(ord(image_file.read(1)))
         images.append(image)
 
     for image in images:
         print(image)
-        o.write(",".join(str(pix) for pix in image)+"\n") 
-    f.close()
-    o.close()
-    l.close()
+        writer.write(",".join(str(pix) for pix in image)+"\n") 
+    image_file.close()
+    writer.close()
+    labels.close()
 
 if __name__ == '__main__':
     convert_CSV("train-images-idx3-ubyte", "train-labels-idx1-ubyte",
-            "mnist_train.csv", 60000)
+            "mnist_train_100.csv", 100) # dim = 60000
     convert_CSV("t10k-images-idx3-ubyte", "t10k-labels-idx1-ubyte",
-            "mnist_test.csv", 10000)
+            "mnist_test_10.csv", 10) # dim = 10000
 

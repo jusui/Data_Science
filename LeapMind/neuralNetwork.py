@@ -115,8 +115,8 @@ if __name__ == '__main__':
     # read MNIST dataset
     with open("mnist_train.csv", "r") as training_data_file:
         training_data_list = training_data_file.readlines()
-        print(len(training_data_list))
-        print(training_data_list[0]) # 0 ~ 255
+        # print(len(training_data_list)) # 60000
+        # print(training_data_list[0]) # 0 ~ 255
 
     """ visualize number """
     # train_values  = training_data_list[0].split(',') # get first data in training_data_list
@@ -153,30 +153,26 @@ if __name__ == '__main__':
     # test_query = nn.query(( np.asfarray(test_values[1:]) / 255.0 * 0.99 ) + 0.01)
     # print(test_query)
 
-    scorecard = []
+    calc_score = []
     for test in test_data_list:
         test_values   = test.split(',')
         correct_label = int(test_values[0])
-        print("correct label :", correct_label)
-
+        # print("correct label :", correct_label)
         inputs  = (np.asfarray(test_values[1:]) / 255.0 * 0.99 ) + 0.01
         outputs = nn.query(inputs)
-        # label : maximum value
-        label = np.argmax(outputs)
-        print("nn's answer =", label)
+        label = np.argmax(outputs) # label is maximum value
+        # print("nn's answer =", label)
         if ( label == correct_label ):
-            scorecard.append(1)            
+            calc_score.append(1)            
         else:
-            scorecard.append(0)
+            calc_score.append(0)
             pass
         
         pass
 
-    # print("scorecard :", scorecard)
-
-    score = np.asarray(scorecard)
+    print("calc_score :", calc_score)
+    score = np.asarray(calc_score)
     print("accuracy =", score.sum() / score.size)
     
     # plt.show()
     print("Done")
-    
