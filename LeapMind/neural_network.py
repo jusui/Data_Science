@@ -20,6 +20,8 @@ class NeuralNetwork:
                                     (self.hnodes, self.inodes))
         self.who = np.random.normal(0.0, pow(self.onodes, -0.5),
                                     (self.onodes, self.hnodes))
+        # self.wih = (np.random.randn(self.hnodes, self.inodes))
+        # self.who = (np.random.randn(self.onodes, self.hnodes))
 
         # learning rate : eta
         self.lr = eta
@@ -99,18 +101,17 @@ if __name__ == "__main__":
 
 
     # Test my NN
-    score = []
-
     test_data_file = open("mnist_test.csv", 'r')
     test_data_list = test_data_file.readlines()
     test_data_file.close()
     #    print(test_data_list)
-
+    
+    score = []
     for test in test_data_list:
         value = test.split(',')
         # answer label
         answer_label = int(value[0])
-        # print(answer_label, "answer_label")
+        print(answer_label, "answer_label")
 
         # scaling & shift, inputs.shape = [0, 0, ...]
         inputs  = (np.asfarray(value[1:]) / 255.0 * 0.99) + 0.01
