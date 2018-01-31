@@ -106,8 +106,34 @@ class Person(object):
 
 
 # [8.2] 継承(inheritance)
+""" 
+[定義]より上の階層の型の属性を，定義なしに利用すること.
+関連する抽象データ型をグループ化する仕組みを与える.
+(e.f.)list(), str()はlen()が使える.
 
-    
+"""
+class MITPerson(Person):
+    """
+    MITPerson classは，Person classのサブクラスであり，Personの属性を継承する
+    サブクラスは，属性継承に加え，属性の追加・属性のオーバーライド(置換)が可能
+    """
+
+    nextIdNum = 0 # 個人識別番号
+
+    def __init__(self, name):
+        """ nextIdNumはMITPersonそのものに属すため，
+        MITPersonのインスタンスが生成されるとき，nextIdNumの新たなインスタンスは生成されない """
+        Person.__init__(self, name)        # 継承したインスタンスを初期化
+        self.idNum = MITPerson.nextIdNum   # self.idNumを初期化
+        MITPerson.nextIdNum += 1
+
+    def getIdNum(self):
+        return self.idNum
+
+    def __lt__(self, other):
+        return self.idNum < other.idNum
+
+        
 
 if __name__ == '__main__':
     # [8.1.1]class IntSet
@@ -137,3 +163,16 @@ if __name__ == '__main__':
 
 
     # [8.2]
+    p1 = MITPerson('Barbara Beaver')
+    print(str(p1) + '\'s id number is ' + str(p1.getIdNum()))
+
+    p1 = MITPerson('Mark Guttag')
+    p2 = MITPerson('Billy Bob Beaver')
+    p3 = MITPerson('Billy Bob Beaver')
+    p4 = Person('Billy Bob Beaver')
+
+    print('p1 < p2 =', p1 < p2) # True
+    print('p3 < p2 =', p3 < p2) # False
+    print('p4 < p1 =', p4 < p1) # True
+
+    
