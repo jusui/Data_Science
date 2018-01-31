@@ -1,0 +1,2 @@
+test email from python.
+ぱいそん3から，テスト送信
