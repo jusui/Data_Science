@@ -22,8 +22,6 @@ class neuralNetwork:
         # initialize weight : w12 as node1_node2 with gaussian
         self.wih = (np.random.randn(self.hnodes, self.inodes))
         self.who = (np.random.randn(self.onodes, self.hnodes))
-        # self.wih = np.random.normal(0.0, pow(self.inodes, -0.5), (self.hnodes, self.inodes))
-        # self.who = np.random.normal(0.0, pow(self.hnodes, -0.5), (self.onodes, self.hnodes))
 
         # activation function        
         self.activation_function = lambda x: special.expit(x)
@@ -38,15 +36,6 @@ class neuralNetwork:
     def grad_sigmoid(self, x):
         return self.sigmoid(x) * (1.0 - self.sigmoid(x))
     
-    # relu function
-    def relu(self, x):
-        return np.maximum(0, x)
-
-    def grad_relu(self, x):
-        grad = np.zeros(x)
-        grad[ x >= 0 ] = 1
-        return grad
-
     
     # train nn
     def train(self, inputs_list, targets_list):
@@ -95,7 +84,6 @@ class neuralNetwork:
         final_inputs  = np.dot(self.who, hidden_outputs)
         final_outputs = self.sigmoid(final_inputs)
         
-        # pass
         return final_outputs
 
  
@@ -104,9 +92,7 @@ if __name__ == '__main__':
     input_nodes  = 784 # 28 * 28
     hidden_nodes = 100 # 10 ~ 784
     output_nodes = 10  # 0 ~ 9
-
-    # learning rate
-    learning_rate = 0.3
+    learning_rate = 0.3 
 
     # nn instance
     nn = neuralNetwork(input_nodes, hidden_nodes, output_nodes, learning_rate)
@@ -114,13 +100,12 @@ if __name__ == '__main__':
 
     # read MNIST dataset
     with open("mnist_train.csv", "r") as training_data_file:
-        training_data_list = training_data_file.readlines()
-        # print(len(training_data_list)) # 60000
+        training_data_list = training_data_file.readlines() # 60000
         # print(training_data_list[0]) # 0 ~ 255
 
-    """ visualize number """
+    # """ [easy test] visualize number (e.f. '5')"""
     # train_values  = training_data_list[0].split(',') # get first data in training_data_list
-    # # np.asfarray() : list(string -> float)
+    # # string -> float with np.asfarray()
     # train_data_image = np.asfarray(train_values[1:]).reshape((28, 28)) # remove label & reshape values to 28 * 28
     # plt.imshow(train_data_image, cmap = 'Greys', interpolation = 'None')
     
@@ -144,12 +129,11 @@ if __name__ == '__main__':
         test_data_list = test_data_file.readlines()
         # print(test_data_list[0])
 
-    """ get first data in test_data_list """
+    # """ [easy test] get first data in test_data_list """
     # test_values = test_data_list[0].split(',')
     # print(test_values[0])
     # test_data_image = np.asfarray(test_values[1:]).reshape(28, 28)
     # plt.imshow(test_data_image, cmap = 'Greys', interpolation = 'None')
-
     # test_query = nn.query(( np.asfarray(test_values[1:]) / 255.0 * 0.99 ) + 0.01)
     # print(test_query)
 
@@ -160,7 +144,7 @@ if __name__ == '__main__':
         # print("correct label :", correct_label)
         inputs  = (np.asfarray(test_values[1:]) / 255.0 * 0.99 ) + 0.01
         outputs = nn.query(inputs)
-        label = np.argmax(outputs) # label is maximum value
+        label = np.argmax(outputs) # label:maximum value
         # print("nn's answer =", label)
         if ( label == correct_label ):
             calc_score.append(1)            
@@ -170,9 +154,9 @@ if __name__ == '__main__':
         
         pass
 
-    print("calc_score :", calc_score)
+    # print("calc_score :", calc_score)
     score = np.asarray(calc_score)
     print("accuracy =", score.sum() / score.size)
     
-    # plt.show()
+    plt.show()
     print("Done")
