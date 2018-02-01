@@ -133,8 +133,107 @@ class MITPerson(Person):
     def __lt__(self, other):
         return self.idNum < other.idNum
 
-        
 
+    def isStudent(self):
+        return isinstance(self, Student)
+
+    
+# [8.2.1]多重継承
+class Student(MITPerson):
+    pass # super classから継承する以外何も属性を持たないことを示す
+
+class UG(Student): # under graduate
+    def __init__(self, name, classYear):
+        MITPerson.__init__(self, name)
+        self.year = classYear
+
+    def getClass(self):
+        return self.year
+
+class Grad(Student):
+    # 学生の種類を区別
+    pass # super classから継承する以外何も属性を持たないことを示す
+
+class TransferStudent(Student):
+    """ 編入生 """
+    def init(self, name, fromSchool):
+        MITPerson.__init__(self, name)
+        self.fromSchool = fromSchool
+
+    def getOldSchool(self):
+        return self.fromSchool
+
+
+# [8.3.1]カプセル化と情報隠蔽
+class Grades(object):
+    """ list(講義登録学生), dict(個人番号:成績リスト) """
+    
+    def __init__(self):
+        """ 空の成績ブックを生成する """
+        self.students = []
+        self.grades = {}
+        self.isSorted = True
+
+    def addStudent(self, student):
+        """ studentをStudent型とする studentを成績ブックへ追加する"""
+        if student in self.students:
+            raise ValueError('Dupulicate student')
+        self.students.append(student)
+        self.grades[student.getIdNum()] = []
+        self.isSorted = False
+
+    def addGrade(self, student, grade):
+        """ float grade, gradeをstudentの成績リストへ追加 """
+        try:
+            self.grades[student.getIdNum()].append(grade)
+        except:
+            raise ValueError('Student not in mapping')
+
+    def getGrades(self, student):
+        """ studentの成績リストを返す """
+        try: # studentの成績リストのコピーを返す
+            return self.grades[student.getIdNum()][:]
+        except:
+            raise ValueError('Student not in mapping')
+        
+    def getStudents(self):
+        """ 成績ブックに修められた学生んソートされたリストを返す """
+        if not self.isSorted:
+            self.students.sort()
+            self.isSorted = True
+
+        # 学生のリストのコピーを返すが，この方法は大規模データに対応できない
+        # return self.students[:]
+        for s in self.students:
+            yield s # yield文があると，その関数がジェネレータであると判断される
+
+
+            
+# [8.3.2]情報隠蔽
+class infoHiding(object):
+    def __init__(self):
+        self.visible = 'Look at me'
+        self.__alsoVisible__ = 'Look at me too'
+        self.__invisible = 'Don\'t look at me directly'
+
+    def printVisible(self):
+        print(self.visible)
+
+    def printInvisible(self):
+        print(self.__invisible)
+
+    def __printInvisible(self):
+        print(self.__invisible)
+
+    def __printInvisible__(self):
+        print(self.__invisible)
+
+
+class subClass(infoHiding):
+    def __init__(self):
+        print('from subclass', self.__invisible)
+        
+    
 if __name__ == '__main__':
     # [8.1.1]class IntSet
     s = IntSet()  # instance
@@ -176,3 +275,74 @@ if __name__ == '__main__':
     print('p4 < p1 =', p4 < p1) # True
 
     
+    p5 = Grad('Buzz Aldrin')      
+    p6 = UG('Billy Beaver', 1984) # UG型のオブジェクトであり，Student型ではない!
+    print(p5, 'is a graduate student is', type(p5) == Grad)
+    print(p5, 'is an undergraduate student is', type(p5) == UG)
+
+    print(p5, 'is a student is', p5.isStudent())
+    print(p6, 'is a student is', p6.isStudent())
+    print(p3, 'is a student is', p3.isStudent())
+
+    # [8.3.1]
+    def gradeReport(course):
+        """ course(Grades型), 講義sixHundred に登録している学生の成績レポートを作成"""
+        report = ''
+        for s in course.getStudents():
+            tot = 0.0
+            numGrades = 0
+            for g in course.getGrades(s):
+                tot += g
+                numGrades += 1
+
+            try:
+                average = tot/numGrades
+                report = report + '\n'\
+                         + str(s) + '\'s mean grade is ' + str(average)
+            except ZeroDivisionError:
+                report = report + '\n'\
+                         + str(s) + ' has no grades'
+
+        return report
+
+    
+    ug1 = UG('Jane Doe', 2014)
+    ug2 = UG('John Doe', 2015)    
+    ug3 = UG('David Henry', 2003)
+    g1  = Grad('Billy Buckner')
+    g2  = Grad('Bucky F. Dent')
+    sixHundred = Grades()
+    sixHundred.addStudent(ug1)
+    sixHundred.addStudent(ug2)
+    sixHundred.addStudent(g1)    
+    sixHundred.addStudent(g2)    
+    for s in sixHundred.getStudents():
+        sixHundred.addGrade(s, 75)
+    sixHundred.addGrade(g1, 25)
+    sixHundred.addGrade(g2, 100)
+    sixHundred.addStudent(ug3)
+    print(gradeReport(sixHundred))
+
+    # [8.3.2]
+    test = infoHiding()
+    print(test.visible)
+    print(test.__alsoVisible__)
+    ### AttributeError: 'infoHiding' object has no attribute '__invisible'
+    # print(test.__invisible) 
+
+    test = infoHiding()
+    test.printInvisible()
+    test.__printInvisible__()
+    ### AttributeError: 'infoHiding' object has no attribute '__printInvisible'
+    # test.__printInvisible() 
+
+    ### AttributeError: 'subClass' object has no attribute '_subClass__invisible'
+    # testSub = subClass() 
+    
+
+    # [8.3.3]
+    book = Grades()
+    book.addStudent(Grad('Julie'))
+    book.addStudent(Grad('Charlie'))
+    for s in book.getStudents():
+        print(s)
