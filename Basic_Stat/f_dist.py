@@ -13,6 +13,7 @@ x=X/mY/n
 f(x) = (1/B(m/2, n/2)) * (mx / (mx+n))**m/2 * (n/(mx+n))**(n/2) * x**(-1)
 (x >= 0)
 
+http://lang.sist.chukyo-u.ac.jp/classes/PythonProbStat/Intro2ProbDistri.html
 """
 
 fig, ax = plt.subplots(1, 1)

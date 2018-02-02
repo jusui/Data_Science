@@ -17,9 +17,9 @@ def Exp(lam, x):
 # make a vector x in [0, ..., 6.0]
 x = np.linspace(0, 6.0, 1000)
 # lambda のパターンリスト
-lst = [0.5, 1, 3, 5]
+lst = [0.5, 1, 3, 5, 10]
 
-for i in range(4):
+for i in range(5):
     l = lst[i]
 
     y = [Exp(l, i) for i in x]

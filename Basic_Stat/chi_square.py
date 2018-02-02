@@ -6,8 +6,13 @@ import matplotlib.pyplot as plt
 """
 カイ二乗 (カイ自乗、χ2)分布 (chi-square distribution)
 
-ポアソン分布は単位時間中に平均λ回起こる事象が単位時間中にx回起こる確率を表す離散型確率分布でした。それに対し、「単位時間中に平均λ回起こる事象がα回起こるまでの時間」xが従う確率分布がガンマ分布(gamma distribution)と呼ばれるものです。
+ポアソン分布は単位時間中に平均λ回起こる事象が単位時間中にx回起こる確率を表す離散型確率分布でした。
+対し、「単位時間中に平均λ回起こる事象がα回起こるまでの時間」xが従う確率分布がガンマ分布(gamma distribution)と呼ばれるものです。
 
+整数nに対しα=n/2,λ=1/2とおいたガンマ分布Ga(α,λ)を自由度nのカイ二乗分布とよび、χ2(n)と表します。
+
+
+http://lang.sist.chukyo-u.ac.jp/classes/PythonProbStat/Intro2ProbDistri.html
 """
 
 fig, ax = plt.subplots(1, 1)
