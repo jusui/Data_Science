@@ -62,9 +62,48 @@ def safe_f(*args, **kwargs):
 
     return safe_f
 
-# [8.5]
+# [8.5]1つにまとめる
+def minimize_btch(traget_fn, gradient_fn, theta_0, tolerance = 0.000001):
+    """ 目的関数はtarget_fnを最小化するthetaを勾配降下法で求める """
+
+    step_sizes = [100, 10, 1, 0.1, 0.01, 0.001 0.0001, 0.000001]
+
+    theta = theta_0             # thetaに初期値を設定
+    target_fn = safe(target_fn) # traget_fnの安全版
+    value = target_fn(theta)    # valueの値を最小化
+
+    while True:
+        gradient = gradient_fn(theta)
+        next_thetas = [step(tehta, gradient, -step_size)
+                       for step_size in step_sizes]
+
+        # 誤差関数を最小化する値を選択
+        next_theta = min(next_thetas, key = target_fn)
+        next_value = target_fn(next_theta)
+
+        # 収束したら，修了
+        if abs(value - next_value) < tolerance:
+            return theta
+
+        else:
+            theta, value = next_theta, next_value
+
+# 最大値を求める
+def negate(f):
+    """ input xにチアする-f(x)に相当する関数を返す """
+    return lambda *args, **kwargs: -f(*args, **kwargs)
+
+def negate_all(f):
+    """ fが数値リストを返す場合のnegate関数 """
+    return lambda *args, **kwargs: [-y for y in f(*args, **kwargs)]
+
+def maximize_batch(target_fn, gradient_fn, theta_0, toelrance = 0.000001):
+    return minimize_batch(negate(target_fn),
+                          negat_all(gradient_fn),
+                          theta_0, tolerance)
 
 
+# [8.6]確率的勾配降下法
 
 
 if __name__ == '__main__':
