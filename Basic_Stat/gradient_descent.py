@@ -104,6 +104,13 @@ def maximize_batch(target_fn, gradient_fn, theta_0, toelrance = 0.000001):
 
 
 # [8.6]確率的勾配降下法
+def in_random_order(data):
+    """ データの要素を無作為な順番で返すジェネレータ """
+    indexes = [i for i, _ in enumerate(data)] # indexのリストを作る
+    random.shuffle(indexes)                   # 無作為に並び替える
+    for i in indexes:                         # データをその順番に返す
+        yield data[i]                         
+    
 
 
 if __name__ == '__main__':
