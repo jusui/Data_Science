@@ -53,28 +53,30 @@ def sum_of_squares_gradient(t):
 
 # [8.4]最善の移動量を選択する
 """ (1)固定の移動量とする (2)時間とともに縮小させる (3)各移動時に目的関数が最小と成るよう移動量を決める """
-def safe_f(*args, **kwargs):
+def safe(f):
     """ fと等価だが，無効な入力に対する振る舞いとして無限大を返すような新しい関数を返す """
-    try:
-        return f(*args, **kwargs)
-    except:
-        return float('inf') # 'inf' =  infinity
+    def safe_f(*args, **kwargs):
+        try:
+            return f(*args, **kwargs)
+        except:
+            return float('inf') # 'inf' =  infinity
 
     return safe_f
 
+
 # [8.5]1つにまとめる
-def minimize_btch(traget_fn, gradient_fn, theta_0, tolerance = 0.000001):
+def minimize_batch(target_fn, gradient_fn, theta_0, tolerance = 0.000001):
     """ 目的関数はtarget_fnを最小化するthetaを勾配降下法で求める """
 
-    step_sizes = [100, 10, 1, 0.1, 0.01, 0.001 0.0001, 0.000001]
+    step_sizes = [100, 10, 1, 0.1, 0.01, 0.001, 0.0001, 0.000001]
 
     theta = theta_0             # thetaに初期値を設定
-    target_fn = safe(target_fn) # traget_fnの安全版
+    target_fn = safe(target_fn) # target_fnの安全版
     value = target_fn(theta)    # valueの値を最小化
 
     while True:
         gradient = gradient_fn(theta)
-        next_thetas = [step(tehta, gradient, -step_size)
+        next_thetas = [step(theta, gradient, -step_size)
                        for step_size in step_sizes]
 
         # 誤差関数を最小化する値を選択
@@ -110,7 +112,42 @@ def in_random_order(data):
     random.shuffle(indexes)                   # 無作為に並び替える
     for i in indexes:                         # データをその順番に返す
         yield data[i]                         
-    
+
+def minimize_stochastic(target_fn, gradient_fn, x, y, theta_0, alpha_0 = 0.01):
+    data = zip(x, y)                           
+    theta = theta_0                            # 初期推定値
+    alpha = alpha_0                            # 初期ステップ量
+    min_theta, min_value = None, float("inf")  # 現時点の最小値
+    interations_with_no_improvement = 0        
+
+    # 100回繰り返しても改善しない場合は，ストップ
+    while iterations_with_no_improvement < 100:
+        valeu = sum( target_fn(x_i, y_i, theta) for x_i, y_i in data )
+
+        if value < min_value:
+            # new minimize value見つかれば記憶し，最初のステップ量に戻す
+            min_theta, min_value = theta, value
+            iterations_with_no_improvement = 0
+            alpha = alpha_0
+
+        else:
+            # 改善が見られないため，ステップ量を小さくする
+            iterations_with_no_improvement += 1
+            alpha *= 0.9
+
+        # 各データポイントに対して勾配ステップを適用する
+        for x_i, y_i in in_random_order(data):
+            gradient_i = gradient_fn(x_i, y_i, theta)
+            theta = vector_subtract(theta, scalar_multiply(alpha, gradient_i))
+
+    return min_theta
+
+
+def maximize_stochastic(target_fn, gradient_fn, x, y, theta_0, alpha_0 = 0.01):
+    return minimize_stochastic(negate(target_fn),
+                               negate_all(gradient_fn),
+                               y, y, theta_0, alpha_0)
+
 
 
 if __name__ == '__main__':
@@ -141,6 +178,15 @@ if __name__ == '__main__':
     print("minimum value", sum_of_squares(v))
     print()
         
-        
+
+    # [8.5-8.6]確率的勾配降下法
+    print("using minimize_batch")
+
+    v = [random.randint(-10, 10) for i in range(3)]
+
+    v = minimize_batch(sum_of_squares, sum_of_squares_gradient, v)
+
+    print("minimum v:", v)
+    print("minimun value :", sum_of_squares(v))
 
     plt.show()
