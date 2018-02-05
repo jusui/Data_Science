@@ -31,7 +31,7 @@ lines = extract_from_json(u"イギリス").split("\n")
 
 for line in lines:
     """ (e.f.) [[File:ImamAliMosqueNajafIraq.JPG|thumb|[[ナジャフ]] """
-    file_line = re.search(u"(File|ファイル):(.*?)\|", line) # リテラル '|' にマッチするには, \| or [|]
+    file_line = re.search(u"(File|ファイル):(.*?)\|", line) # '|' のsearchは, \| or [|]
     if file_line is not None:
         print(file_line.group(2))
 

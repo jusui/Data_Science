@@ -48,13 +48,13 @@ if find == False:
 x = 25
 epsilon = 0.01
 step = epsilon ** 2
-numGuess = 0
-wna = 0.0
- while(abs** 2 -x ) >= epsiolon and ans <= x:
+numGuesses = 0
+ans = 0.0
+while abs(ans**2 - x) >= epsilon and ans <= x:
     ans += step
-    numGuesss += 1
+    numGuesses += 1
 
-print('numGuess =', numGuess)
+print('numGuesses =', numGuesses)
 if abs(ans**2 - x) >= epsilon:
     print('Failed on square root of', x)
 
@@ -72,4 +72,3 @@ guess = k / 2.0
 while abs(guess * guess - k) >= epsilon:
     guess = guess - ( ((guess ** 2) - k ) / (2 * guess) )
 print('Square root of ', k, 'is about', guess)
-

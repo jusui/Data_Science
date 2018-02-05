@@ -30,7 +30,9 @@ import re
 def remove_markup(str):
     str = re.sub(r"r{2, 5}", r"", str)
     str = re.sub(r"\[{2}([^|\]]+?\|)*(.+?)\]{2}", r"\2", str)
-    
+    return str
+
+
 temp_dict = {}
 lines = re.split(r"\n[\|}]", extract_from_json(u"イギリス"))
 

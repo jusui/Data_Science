@@ -11,6 +11,11 @@ chap.8
 Gradient Descent
 勾配降下法
 
+[ref]
+https://github.com/joelgrus/data-science-from-scratch/blob/master/code-python3/gradient_descent.py
+
+[scipy sgd]
+http://neuro-educator.com/mlearn1/
 """
 
 def square(x):

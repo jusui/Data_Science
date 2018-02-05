@@ -11,16 +11,12 @@ usage:python nlp_21.py
 [moduleを活用するテクニック]
 https://qiita.com/okadate/items/4153d626a262eabb5a26
 
-
 """
 import sys; sys.path.append('/Users/usui/work/python/pyfiles/mymodule')
 from extract_from_json import extract_from_json
 
-
 print("力技")
-
 lines = extract_from_json(u"イギリス").split("\n")
-
 for line in lines:
     if "Category" in line:
         print(line)
