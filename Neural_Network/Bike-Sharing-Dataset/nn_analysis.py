@@ -2,6 +2,12 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from neural_network import NeuralNetwork
+import unittest
+
+def MSE(y, Y):
+    return np.mean((y - Y) ** 2)
+
 
 """
 外部リソースのURLには、2013年のワシントンD.C.におけるバイクレンタル数のデータが入っています。
@@ -38,6 +44,43 @@ fields_to_drop = ['instant', 'dteday', 'season', 'weathersit',
                   'weekday', 'atemp', 'mnth', 'workingday', 'hr']
 data = rides.drop(fields_to_drop, axis=1)
 print(data.head())
+
+
+"""
+Scaling target variables
+
+"""
+quant_features = ['casual', 'registered', 'cnt', 'temp', 'hum', 'windspeed']
+# store scaling in a dictionary so we can convert back later
+scaled_features = {}
+for each in quant_features:
+    mean, std = data[each].mean(), data[each].std()
+    scaled_features[each] = [mean, std]
+    data.loc[:, each] = (data[each] - mean) / std
+# print(data)
+
+
+"""
+Splitting the data into training, testing, and validation sets
+
+トレーニング後に，テストデータに最後の約21日分を利用する．
+予測と正解の比較に用いる
+"""
+# Save data for approximately the last 21 days
+test_data = data[-21*24:] # (504, 59)
+
+# Now remove the test data from the data set
+data = data[:-21*24] # (16875, 59)
+
+# Separate the data into features(16875, 56) and targets(16875, 3)
+target_fields = ['cnt', 'casual', 'registered']
+features, targets = data.drop(target_fields, axis = 1), data[target_fields]
+# test_features(504, 56), test_targets(504, 3)
+test_features, test_targets = test_data.drop(target_fields, axis = 1), test_data[target_fields]
+
+# 時系列データセットを2つに分ける. 1->training, 2->validating
+train_features, train_targets = features[:-60*24], targets[:-60*24]
+val_features, val_targets = features[-60*24:], targets[-60*24:]
 
 
 
