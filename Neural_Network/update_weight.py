@@ -2,29 +2,20 @@
 import numpy as np
 
 """
-単層の重み更新
-
+[udemy:NN from scratch]
+Lect.59:単層の重み更新
 
 入力層：　x = [2, 3, 4, 5]
-
 ・重み：　　w = [0.4, -0.4, 0.3, 0.2]
-
 ・活性化関数：　シグモイド関数（ f(h) = 1/(1+ exp(-h))
-
 ・出力層：　y = 0.4
 
-から構成される単層ニューラルネットワークの重みを1回更新し、
-
-
+から構成される単層ニューラルネットワークの重みを1回更新し
 ・誤差
-
 ・推定値
-
 ・更新された重みの値
-
-を出力するコードをPythonで書いてみましょう。
-
-学習率は、0.5とします。
+を出力するコードをPythonで書いてみる。
+学習率は, 0.5
 
 """
 
@@ -52,15 +43,11 @@ if __name__ == '__main__':
     error_term = error * sigmoid_der(h)
     del_w = eta * error_term * x
 
+    print('Output:', h)
 
-    print('Output:')
-    print(h)
-
-    print("Error:")
-    print(error)
+    print("Error:", error)
         
-    print("delta_w:")
-    print(del_w)
+    print("delta_w:", del_w)
 
     j = 0
     for i in range(10):
@@ -68,4 +55,3 @@ if __name__ == '__main__':
         print(j, "th loop")
         print("weight = ", w)
         print("w + del_w = ", w + del_w)
-
