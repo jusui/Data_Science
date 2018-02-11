@@ -131,5 +131,24 @@ if __name__ == '__main__':
     plt.plot(losses['train'], label = 'Training loss')
     plt.plot(losses['validation'], label = 'Validation loss')
     _ = plt.ylim()
+    plt.figure()
 
+    
+    """
+    check out your predictions
+    """
+    fig, ax = plt.subplots(figsize=(8,4))
+
+    mean, std = scaled_features['cnt']
+    predictions = network.run(test_features).T*std + mean
+    ax.plot(predictions[0], label='Prediction')
+    ax.plot((test_targets['cnt']*std + mean).values, label='Data')
+    ax.set_xlim(right=len(predictions))
+    ax.legend()
+
+    dates = pd.to_datetime(rides.ix[test_data.index]['dteday'])
+    dates = dates.apply(lambda d: d.strftime('%b %d'))
+    ax.set_xticks(np.arange(len(dates))[12::24])
+    _ = ax.set_xticklabels(dates[12::24], rotation=45)
+    
     plt.show()
