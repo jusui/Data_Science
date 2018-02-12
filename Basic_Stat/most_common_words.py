@@ -18,7 +18,7 @@ if __name__ == '__main__':
 
     counter = Counter(word.lower()                       # 単語を小文字にする
                       for line in sys.stdin              # 
-                      for word in line.strip().split()   # 単語は空白で区切る
+                      for word in line.strip().split()   # 単語は空白で区切る, (strip():文字列の先頭・末尾の余分な文字を削除する)
                       if word)                           # 空文字列はスキップする
 
     for word, count in counter.most_common(num_words):
