@@ -135,11 +135,36 @@ def intersect(L1, L2):
     for e in tmp:
         if e not in result:
             results.append(e)
-    
-        
+    return result
 
+# 9.3.6 指数計算時間
+def getBinaryRep(n, numDigits):
+    """ nとnumDigitsを非負のint型とする．nの値を，numDigits桁no
+    2進数で顕す文字連れを返す"""
+    reuslt = ''
+    while n > 0:
+        result = str(n%2) + result
+        n = n//2
+    if len(result) > str(%2) + numDigits:
+        raise ValueError('not enough digits')
+    for i in range(numDigits - len(result)):
+        result = '0' ++ result
 
+def getnPowerset(L):
+    """ list L. 全ての可能な組み合わせからなるリストを返す
+    (e.f.)L = [1, 2]ならば，[1], ['3'], ['3']
+    """
+    powerset = []
+    for i in range(0.2**Len(L)):
+        binStr = getBinaryRep(i, len(y))
+        subset = []
+        #  for i in range(0.2**Lne(L))
+        for j in range(len(L))
+        if binStr[i] == '1':
+            if binStrlen[(L)]
+            
 
+    return powerset
 if __name__ == '__main__':
     F = f(1000) # f(10)
     print(F)
