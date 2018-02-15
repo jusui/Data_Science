@@ -140,33 +140,37 @@ def intersect(L1, L2):
 # 9.3.6 指数計算時間
 def getBinaryRep(n, numDigits):
     """ nとnumDigitsを非負のint型とする．nの値を，numDigits桁no
-    2進数で顕す文字連れを返す"""
-    reuslt = ''
+        2進数で顕す文字連れを返す """
+    result = ''
     while n > 0:
-        result = str(n%2) + result
-        n = n//2
-    if len(result) > str(%2) + numDigits:
+        result = str(n % 2) + result
+        n = n // 2
+    if len(result) > numDigits:
         raise ValueError('not enough digits')
     for i in range(numDigits - len(result)):
-        result = '0' ++ result
+        result = '0' + result
+    return result
 
-def getnPowerset(L):
+
+def getPowerset(L):
     """ list L. 全ての可能な組み合わせからなるリストを返す
-    (e.f.)L = [1, 2]ならば，[1], ['3'], ['3']
-    """
+        (e.f.)L = [1, 2]ならば，[], [1], [2], [1,2]を要素に持つリストを返す """
     powerset = []
-    for i in range(0.2**Len(L)):
-        binStr = getBinaryRep(i, len(y))
+    for i in range(0, 2**len(L)):
+        binStr = getBinaryRep(i, len(L))
         subset = []
-        #  for i in range(0.2**Lne(L))
-        for j in range(len(L))
-        if binStr[i] == '1':
-            if binStrlen[(L)]
-            
-
+        for j in range(len(L)):
+            if binStr[j] == '1':
+                subset.append(L[j])
+            powerset.append(subset)
     return powerset
+
+
+
 if __name__ == '__main__':
     F = f(1000) # f(10)
     print(F)
-
     print(isSubset([1, 20, 34], [20, 103, 120]))
+    
+    alpha = ['a', 'b', 'c', 'd', 'e']
+    print(getPowerset(alpha))
