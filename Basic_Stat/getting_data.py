@@ -82,16 +82,77 @@ def plot_years(plt, books):
 ####################
 # APIs
 ####################
+endpoint = "https://api.github.com/users/jusui/repos"
+
+repos = json.loads(requests.get(endpoint).text)
+
+from dateutil.parser import parse
+
+dates = [parse(repo["created_at"]) for repo in repos ]
+month_counts = Counter(date.month for date in dates)
+weekday_counts = Counter(date.weekday() for date in dates)
 
 
 ####################
-# Books about data
+# Twitter
 ####################
+from twython import Twython
 
+# fill these in if you want to use the code
+CONSUMER_KEY = ""
+CONSUMER_SECRET = ""
+ACCESS_TOKEN = ""
+ACCESS_TOKEN_SECRET = ""
 
-####################
-# Books about data
-####################
+def call_twitter_search_api():
+
+    twitter = Twython(CONSUMER_KEY, CONSUMER_SECRET)
+
+    # search for tweets containing the phrase "data science"
+    for status in twitter.search(q = '"data science"')["statuses"]:
+        user = status["user"]["screen_name"].encode('utf-8')
+        text = status["text"].encode('utf-8')
+        print(user, ":", text)
+        print()
+
+from twython import TwythonStreamer
+""" Twythonを継承するクラスを作り，on_success method(and on_error method)をオーバーライドする
+データを大域変数に格納するのは稚拙な方法であるが，サンプルコードを単純化できる """
+tweets = []
+
+class MyStreamer(TwythonStreamer):
+    """ streamとやり取りを行う方法を定義するTwythonStreamerのサブクラス """
+    
+    def  on_success(self, data):
+        """ Twitterがデータを送ってきたらどう対処する?
+        ここでdataは，tweetを表すPython辞書として渡される """
+
+        # 英語Tweetのみ対称
+        if data['lang'] == 'en':
+            tweets.append(data)
+            print("received tweet #", len(tweets))
+
+        # 十分なtweetsを得たら終了
+        if len(tweets) >= 1000:
+            self.disconnect()
+
+    def on_error(self, status_code, data):
+        print(status_code, data)
+        self.disconnect()
+
+def call_twitter_streaming_api():
+    """ MyStreamerは，Twitterストリームに接続してデータを受け取ると，
+    on_success methodが呼ばれ英語のtweetであればtweetsリストに追加される．"""
+
+    # 1000 tweets超えるとstream切断して終了
+    stream = MyStreamer(CONSUMER_KEY, CONSUMER_SECRET, ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
+
+    # 公開されているtweet(statuses)からキーワード 'data'を持つものを収集する
+    stream.statuses.filter(track = 'data')
+
+    # 全てのtweet(statuses)の中からランダムに収集を行うには，次を使う
+    # stream.statuses.sample()
+    
 
 if __name__ == '__main__':
 
@@ -153,9 +214,10 @@ if __name__ == '__main__':
 
     print("Github API")
     print("dates", dates)
-    print("month_counts", mount_counts)
-    print("weekday_count", weekday_coutns)
-
+    print("month_counts", month_counts)
+    print("weekday_count", weekday_counts)
+    
+    # 最後の5つのリポジトリについて，プログラミング言語の種類を取り出す
     last_5_repositories = sorted(repos,
                                  key = lambda r: r["created_at"],
                                  reverse = True)[:5]
@@ -164,3 +226,9 @@ if __name__ == '__main__':
                                   for repo in last_5_repositories])
     
     
+
+    top_hashtags = Counter(hashtag['text'].lower()
+                           for tweet in tweets
+                           for hashtag in tweet["entities"]["hashtags"])
+
+    print(top_hashtags.most_common(5))
