@@ -2,10 +2,13 @@
 from collections import Counter, defaultdict
 from functools import partial, reduce
 from linear_algebra.linear_algebra import shape, get_row, get_column, make_matrix
+# vector_mean, vector_sum, dot, magnitude, vecotr_substract, scalar_multiply
 from statistics import correlation, standard_deviation, mean
 from probability import inverse_normal_cdf
+
 import math, random, csv
 import matplotlib.pyplot as plt
+import dateutil.parser
 
 
 """
@@ -78,7 +81,6 @@ def correlation_matrix(data):
 def make_scatterplot_matrix():
 
     # first, generate some random data
-
     num_points = 100
 
     def random_row():
@@ -94,7 +96,6 @@ def make_scatterplot_matrix():
             for _ in range(num_points)]
 
     # then plot it
-
     _, num_columns = shape(data)
     fig, ax = plt.subplots(num_columns, num_columns)
 
@@ -120,7 +121,49 @@ def make_scatterplot_matrix():
 
     plt.show()
 
-    
+def parse_row(input_row, parsers):
+    """ 与えられたパーサのリスト(その内幾つかはNone)
+    の中から列ごとに適切する """
+    return [parser(value) if parser is not None else value
+            for value, parser in zip(input_row, parsers)]
+
+def parse_rows_with(reader, parsers):
+    """ readerをラップして入力の各列にパーサを適用する """
+    for row in reader:
+        yield parse_row(row, parsers)
+
+def try_or_none(f):
+    """ 関数fが例外の場合は，Noneを返す. fは1つの入力を想定する """
+    def f_or_none(x):
+        try:
+            return f(x)
+        except:
+            return None
+    return f_or_none
+
+def parse_row(input_row, parsers):
+    return [try_or_none(parser)(value) if parser is not None else value
+            for value, parser in zip(input_row, parsers)]
+
+def try_parse_field(field_name, value, parser_dict):
+    """ parser_dictの適切な関数を使って値を解釈する """
+    parser = parser_dict.get(field_name) # 対応する値がなければNoneが返る
+    if parser is not None:
+        return try_or_none(parser)(value)
+    else:
+        return value
+
+def parse_dict(input_dict, parser_dict):
+    return { field_name : try_parse_field(field_name, value, parser_dict)
+             for field_name, value in input_dict.items() }
+
+
+############
+# Manipulating data
+############
+
+
+
 if __name__ == "__main__":
 
     # histogram
@@ -131,3 +174,41 @@ if __name__ == "__main__":
     
     # 散布図行列
     make_scatterplot_matrix()
+
+    # safe parsing
+    data = []
+
+    with open("comma_delimited_stock_prices.csv", "r", encoding = "utf-8", newline = '') as f:
+        reader = csv.reader(f)
+        for line in parse_rows_with(reader, [dateutil.parser.parse, None, float]):
+            data.append(line)
+
+        for row in data:
+            if any(x is None for x in row):
+                print(row)
+
+        print("stocks")
+        with open("stocks.txt", "r", encoding = "utf-8", newline = '') as f:
+            reader = csv.DictReader(f, delimiter = "\t")
+            data = [parse_dict(row, {'date' : dateutil.parser.parse,
+                                     'closing_price' : float})
+                    for row in reader]
+
+        max_aapl_price = max(row["closing_price"]
+                             for row in data
+                             if row["symbol"] == "AAPL")
+        print("max aapl price", max_aapl_price)
+
+        # group rows by symbol
+        by_symbol = defaultdict(list)
+
+        for row in data:
+            by_symbol[row["symbol"]].append(row)
+
+        # use a dict comprehension to find the max for each symbol
+        max_price_by_symbol = { symbol : max(row["closing_price"]
+                                             for row in grouped_rows)
+                                for symbol, grouped_rows in by_symbol.items() }
+
+        print("max price by symbol")
+        print(max_price_by_symbol)
