@@ -6,6 +6,9 @@ from bs4 import BeautifulSoup
 import requests
 
 import matplotlib.pyplot as plt
+
+""" DS from Scratch[9章.データの取得] """
+
 ####################
 # Books about data
 ####################
@@ -37,9 +40,9 @@ def book_info(td):
 
 from time import sleep
 
-def scrape(num_pages = 31):
+def scrape(num_pages=31):
     base_url = "http://shop.oreilly.com/category/browse-subjects/" + \
-               "data.do?sortby=publicationDate&page="
+           "data.do?sortby=publicationDate&page="
 
     books = []
 
@@ -51,10 +54,9 @@ def scrape(num_pages = 31):
         for td in soup('td', 'thumbtext'):
             if not is_video(td):
                 books.append(book_info(td))
-    
-        # robots.txtの内容を尊重する
-        sleep(30)
 
+        # now be a good citizen and respect the robots.txt!
+        sleep(30)
 
     return books
 
@@ -62,13 +64,13 @@ def scrape(num_pages = 31):
 def get_year(book):
     """ book["date"]の値は，例えば'November 2014'の形式であるため，
     空白で分割し，2つ目の要素を取り出す """
-    return int(bokk["date"].split()[1])
+    return int(book["date"].split()[1])
 
 
 def plot_years(plt, books):
     """ 1年分のデータが揃っているのは2014年まで """
-    years_counts = Counter(get_year(book) for book in books
-                           if get_year(book) <= 2014)
+    year_counts = Counter(get_year(book) for book in books
+                          if get_year(book) <= 2014)
 
     years = sorted(year_counts)
     book_counts = [year_counts[year] for year in x]
@@ -105,7 +107,6 @@ ACCESS_TOKEN = ""
 ACCESS_TOKEN_SECRET = ""
 
 def call_twitter_search_api():
-
     twitter = Twython(CONSUMER_KEY, CONSUMER_SECRET)
 
     # search for tweets containing the phrase "data science"
@@ -155,7 +156,7 @@ def call_twitter_streaming_api():
     
 
 if __name__ == '__main__':
-
+    
     def process(date, symbol, price):
         print(date, symbol, price)
 
@@ -226,7 +227,7 @@ if __name__ == '__main__':
                                   for repo in last_5_repositories])
     
     
-
+    # 最も良く使われているハッシュタグを調べる
     top_hashtags = Counter(hashtag['text'].lower()
                            for tweet in tweets
                            for hashtag in tweet["entities"]["hashtags"])
