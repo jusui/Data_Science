@@ -104,11 +104,11 @@ def negate_all(f):
     """ fが数値リストを返す場合のnegate関数 """
     return lambda *args, **kwargs: [-y for y in f(*args, **kwargs)]
 
-def maximize_batch(target_fn, gradient_fn, theta_0, toelrance = 0.000001):
+def maximize_batch(target_fn, gradient_fn, theta_0, tolerance=0.000001):
     return minimize_batch(negate(target_fn),
-                          negat_all(gradient_fn),
-                          theta_0, tolerance)
-
+                          negate_all(gradient_fn),
+                          theta_0,
+                          tolerance)
 
 # [8.6]確率的勾配降下法
 def in_random_order(data):

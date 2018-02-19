@@ -1,9 +1,10 @@
 # coding: utf-8
 from collections import Counter, defaultdict
 from functools import partial, reduce
-from linear_algebra.linear_algebra import shape, get_row, get_column, make_matrix
-from linear_algebra.linear_algebra import dot, magnitude
-# vector_mean, vector_sum, vecotr_substract, scalar_multiply
+from linear_algebra.linear_algebra import shape, get_row, get_column, make_matrix, \
+    dot, magnitude, vector_mean, vector_sum, vector_subtract, scalar_multiply
+from gradient_descent import maximize_batch, negate, negate_all, minimize_batch
+from gradient_descent import *
 from statistics import correlation, standard_deviation, mean
 from probability import inverse_normal_cdf
 
@@ -241,7 +242,7 @@ def de_mean_matrix(A):
     return make_matrix(nr, nc, lambda i, j:A[i][j] - column_means[j])
 
 def direction(w):
-    amg = magnitude(w)
+    mag = magnitude(w)
     return [w_i / mag for w_i in w]
 
 def directional_variane_i(x_i, w):
@@ -252,6 +253,63 @@ def directional_variance(X, w):
     """ wで示される方向に対する, データの分散を求める """    
     return sum(directional_variance_i(x_i, w)
                for x_i in X)
+
+def directional_variance_gradient_i(x_i, w):
+    """ x_i列の値がw方向に持つ分散に対する勾配 """
+    projection_length = dot(x_i, direction(w))
+    return [2 * projection_length * x_ij for x_ij in x_i]
+
+def directional_variance_gradient(X, w):
+    return vector_sum(directional_variance_gradient_i(x_i, w)
+                      for x_i in X)
+
+def first_principal_component(X):
+    guess = [1 for _ in X[0]]
+    unscaled_maximizer = maximize_batch(
+        partial(directional_variance, X),           # is now a function of w
+        partial(directional_variance_gradient, X),  # is now a function of w
+        guess)
+    return direction(unscaled_maximizer)
+
+def first_principal_component_sgd(X):
+    """ ここではyを使わないのでNoneを返す
+    受け取る側の関数はその入力を無視する"""
+    guess = [1 for _ in X[0]]
+    unscaled_maximizer = maximize_stochastic(
+        lambda x, _, w: directional_variance_i(x, w),
+        lambda x, _, w: directional_variance_gradient_i(x, w),
+        X,
+        [None for _ in X], # the fake "y"
+        geuss )
+    return direction(unscaled_maximizer)
+
+def project(v, w):
+    """ vをw方向に射影したベクトルを返す """
+    projection_length = dot(v, w)
+    return scalar_multiply(projection_length, w)
+
+def remove_projection_from_vector(v, w):
+    """ vをw方向に射影した結果をvから取り除く """
+    return vector_subtract(v, project(v, w))
+
+def remove_projection(X, w):
+    """ Xの各列に対して，w方向の射影結果を各列から取り除く """
+    return [remove_projection_from_vector(x_i, w) for x_i in X]
+
+def principal_component_analysis(X, num_components):
+    components = []
+    for _ in range(num_components):
+        component = first_principal_component(X)
+        components.append(component)
+        X = remove_projection(X, component)
+    return components
+
+
+def transform_vector(v, components):
+    return [dot(v, w) for w in components]
+
+def transform(X, components):
+    return [transform_vector(x_i, components) for x_i in X]
 
 
 
@@ -445,3 +503,10 @@ if __name__ == "__main__":
     print("de_mean_matrix :", de_mean_matrix(X))
 
     
+    print("PCA")
+
+    Y = de_mean_matrix(X)
+    components = principal_component_analysis(Y, 2)
+    print("Principal components :", components)
+    print("first point :", Y[0])
+    print("first point transformed", transform_vector(Y[0], components))

@@ -4,7 +4,7 @@ from __future__ import division
 import re, math, random
 import matplotlib.pyplot as plt
 from collections import defaultdict, Counter
-from functools import partial
+from functools import partial, reduce
 
 #
 # -- functions for working with vectors
@@ -20,12 +20,6 @@ def vector_subtract(v, w):
 
 def vector_sum(vectors):
     """ sums all corresponding elements """
-    result = vectors[0]
-    for vector in vectors[1:]:
-        result = vector_add(result, vector)
-    return result
-
-def vector_sum_2(vectors):
     return reduce(vector_add, vectors)
 
 def scalar_multiply(c, v):
@@ -35,6 +29,12 @@ def scalar_multiply(c, v):
 def scalar_mean(vectors):
     """ compute the vector whose its element is the mean of \
     the its elements of the input vectors """
+    n = len(vectors)
+    return scalar_multiply(1/n, vector_sum(vectors))
+
+def vector_mean(vectors):
+    """ i番目の要素が，入力したベクトルリストの
+    i番目の要素すべての平均であるベクトルを計算する """
     n = len(vectors)
     return scalar_multiply(1/n, vector_sum(vectors))
 
