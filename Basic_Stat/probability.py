@@ -4,10 +4,7 @@ import math, random
 import matplotlib.pyplot as plt
 
 """
-[DS from scaratch]
-chap.6
-probability
-確率
+[DS from scaratch] chap.6 probability/確率
 """
 
 # [6.1]従属と独立
