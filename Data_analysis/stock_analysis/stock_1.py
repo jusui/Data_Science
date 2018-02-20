@@ -146,7 +146,7 @@ plt.ylabel('Risk')
 for label, x, y in zip(rets.columns, rets.mean(), rets.std()):
     plt.annotate(label, xy = (x, y), xytext = (0, 50), \
                  textcoords = 'offset points', ha = 'right', va = 'bottom',\
-                 arrowprops = dict(arrowstyupe = '-', connectionstyle = 'arc3'))
+                 arrowprops = dict(arrowstype = '-', connectionstyle = 'arc3'))
 
 
 
