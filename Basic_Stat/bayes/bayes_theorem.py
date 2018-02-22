@@ -1,6 +1,4 @@
 from scipy import stats
-
-
 """
 Bayes theorem.
 http://www.tsjshg.info/udemy/Lec99.html
