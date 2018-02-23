@@ -5,8 +5,7 @@ from numpy import random
 random.seed(0)
 
 """
-[udemy]
-条件付き確率
+[udemy]条件付き確率
 "totals" は各年齢範囲に属する人数
 "purchases"は各年齢範囲の人々が購入した商品の数を含むディクショナリです。 
 totalPurchases は総購入数です。総人数は100,000人
