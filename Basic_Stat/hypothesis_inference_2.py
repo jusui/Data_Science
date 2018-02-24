@@ -107,4 +107,57 @@ if __name__ == '__main__':
     # 観測された値と少なくとも同等に極端な値が生じる確率を計算
     #
     print("表が530回出た場合のp値:", two_sided_p_value(529.5, mu_0, sigma_0))
+
+    # simulation
+    extreme_volume_count = 0
+    for _ in range(1000): # default 100000
+        num_heads = sum(1 if random.random() < 0.5 else 0
+                        for _ in range(1000))
+        if num_heads >= 530 or num_heads <= 470:
+            extreme_volume_count += 1
+
+    print("1000回コインを投げて表が出た事象の中で，極端な事象回数")
+    print(extreme_volume_count / 100000) # 0.062 * 100 % > 5 %
+    print("p値は有意性の5％より大きいため，帰無仮説は棄却されない")
     print()
+
+    print("表が532回出た場合")
+    print(two_sided_p_value(531.5, mu_0, sigma_0)) # 0.046 * 100 % < 5 %
+    print("5%より小さい値なので，帰無仮説を棄却する")
+
+    upper_p_value = normal_probability_above
+    lower_p_value = normal_probability_below
+
+    # [片側検定]525回表の場合，帰無仮説を棄却しない
+    print("片側検定，525回表の場合:", upper_p_value(524.5, mu_0, sigma_0))
+    print("p値は5％より大きいため，棄却しない")
+    print("片側検定，527回表の場合:", upper_p_value(526.5, mu_0, sigma_0))
+    print("p値は5％より小さいため，棄却")
+    print()
+
+    # [7.3]信頼区間
+    print("表が525回出た場合，pの推定値は0．525になる")
+    print("これはどの程度信頼できるか")
+    # math.sqrt(p * (1 - p) / 1000) に従う
+    p_hat = 525 / 1000
+    mu = p_hat
+    sigma = math.sqrt(p_hat * (1 - p_hat) / 1000) # 0.0158
+    print("sigma:", sigma)
+
+    cl = normal_two_sided_bounds(0.95, mu, sigma)
+    print("CL:", cl)
+    print("正規分布近似を使うと，pの正しい値が次の区間に入るのは95％の確率で信頼できる")
+    print()
+    
+    print("表が540回出た場合")
+    p_hat = 540 / 1000
+    mu = p_hat
+    sigma = math.sqrt(p_hat * (1 - p_hat) / 1000) # 0.0158
+    print("sigma:", sigma)
+    
+    cl = normal_two_sided_bounds(0.95, mu, sigma)
+    print("CL:", cl)
+    print("コインに歪みがないとした場合，この信頼区間に入っていない")
+    print("仮説が正しいなら，95％の確率でその範囲に入るという検定に対して，\
+    「このコインに歪みがない」と言う仮説は成立しない")
+    
