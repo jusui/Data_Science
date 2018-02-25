@@ -1,7 +1,8 @@
 # coding: utf-8
 from probability import normal_cdf, inverse_normal_cdf
 import math, random
-
+import matplotlib.pyplot as plt
+import numpy as np
 """
 [DS from Scratch]7.Hypothesis and Inference / 仮説と推定
 """
@@ -86,7 +87,20 @@ def a_b_test_statistic(N_A, n_A, N_B, n_B):
     return (p_B - p_A) / math.sqrt(sigma_A ** 2 + sigma_B ** 2)
 
 # [7.6]Bayes推定
+""""パラメータの事前分布に対して観測データとベイズの定理を用いて，
+パラメータの事後分布を求める. 
+コイン投げの確率が未知のパラメータであった場合，ベータ分布を事前分布として使う"""
+def B(alpha, beta):
+    """確率の総和が1になるように定数で正規化する"""
+    return math.gamma(alpha) * math.gamma(beta) / math.gamma(alpha + beta)
 
+def beta_pdf(x, alpha, beta):
+    # https://ja.wikipedia.org/wiki/%E3%83%99%E3%83%BC%E3%82%BF%E5%88%86%E5%B8%83
+    if x < 0 or x > 1: # [0, 1]以外は重みは0
+        return 0
+    return (x ** (alpha - 1)) * ((1 - x) ** (beta - 1)) / B(alpha, beta)
+
+        
 
 
 if __name__ == '__main__':
@@ -212,8 +226,19 @@ if __name__ == '__main__':
     z = a_b_test_statistic(1000, 200, 1000, 150)
     print(z)
     print("p-value:", two_sided_p_value(z)) # 0.003 < 0.05
-    print("両方の試験効果が等しい場合，このクリック数の違いがでる確率は0.003しかない")
+    print("両方の試験効果が等しい場合，クリック数の違いがでる確率は0.003(0.3%)しかない")
     print()
     
     # [7.6]Bayes推定
+    # ベータ分布は二項分布の共役事前分布!
+    # https://to-kei.net/bayes/conjugate-prior-distribution/
+    xs = [x / 10.0 for x in np.arange(0, 10, 0.05)]
+    print(xs)
+    plt.plot(xs, [beta_pdf(x, 1, 1) for x in xs], '-', label = 'alpha=1, beta=1')
+    plt.plot(xs, [beta_pdf(x, 10, 10) for x in xs], '--', label = 'alpha=10, beta=10')
+    plt.plot(xs, [beta_pdf(x, 4, 16) for x in xs], ':', label = 'alpha=4, beta=16')
+    plt.plot(xs, [beta_pdf(x, 16, 4) for x in xs], ':', label = 'alpha=16, beta=4')
+    plt.legend()
+    plt.title("Various Beta pdf")
+    plt.show()
     
