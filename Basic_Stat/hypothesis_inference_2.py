@@ -60,7 +60,34 @@ def two_sided_p_value(x, mu = 0, sigma = 1):
     else:
         # x < muの場合，テイル確率はxより小さい分
         return 2 * normal_probability_below(x, mu, sigma)
-    
+
+# [7.3] 信頼区間
+# 仮説検定について本当であるか検証するため，観測値周辺の信頼区間を求める
+
+# [7.4] p hacking
+def run_experiment():
+    """歪みのないコインを1000回投げて表ならTrue，裏ならFalse"""
+    return [random.random() < 0.5 for _ in range(1000)]
+
+def reject_fairness(experiment):
+    """5%の有意水準を用いる"""
+    num_heads = len([flip for flip in experiment if flip])
+    return num_heads < 469 or num_heads > 531
+
+# [7.5] A/B Test
+def estimated_parameters(N, n):
+    p = n / N
+    sigma = math.sqrt(p * (1 - p) / N)
+    return p, sigma
+
+def a_b_test_statistic(N_A, n_A, N_B, n_B):
+    p_A, sigma_A = estimated_parameters(N_A, n_A)
+    p_B, sigma_B = estimated_parameters(N_B, n_B)
+    return (p_B - p_A) / math.sqrt(sigma_A ** 2 + sigma_B ** 2)
+
+# [7.6]Bayes推定
+
+
 
 if __name__ == '__main__':
     
@@ -160,4 +187,33 @@ if __name__ == '__main__':
     print("コインに歪みがないとした場合，この信頼区間に入っていない")
     print("仮説が正しいなら，95％の確率でその範囲に入るという検定に対して，\
     「このコインに歪みがない」と言う仮説は成立しない")
+    
+    # [7.4]5%の確率で誤って帰無仮説を棄却する
+    random.seed(0)
+    experiments = [run_experiment() for _ in range(1000)]
+    num_rejections = len([experiment
+                          for experiment in experiments
+                          if reject_fairness(experiment)])
+
+    print("排除数:", num_rejections)
+    print()
+
+    # [7.5]A/Bテスト
+    print("[Case.1] A(1000人中200人), B(1000人中180人)")
+    z = a_b_test_statistic(1000, 200, 1000, 180)
+    print("標準正規分布を持つ統計量を用いて，p_A = p_Bを仮説検定")
+    print(z) # -1.14
+
+    print("平均が等しい時に，この大きさの違いが生じる確率")
+    print(two_sided_p_value(z)) # 0.254 >> 0.05
+    print("p値が大きすぎる(>>0.05)ため，帰無仮説を棄却できず違いが有ると結論を下せない")
+    print()
+    print("[Case.2] A(1000人中200人), B(1000人中150人)")
+    z = a_b_test_statistic(1000, 200, 1000, 150)
+    print(z)
+    print("p-value:", two_sided_p_value(z)) # 0.003 < 0.05
+    print("両方の試験効果が等しい場合，このクリック数の違いがでる確率は0.003しかない")
+    print()
+    
+    # [7.6]Bayes推定
     
