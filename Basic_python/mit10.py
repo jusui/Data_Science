@@ -35,6 +35,20 @@ def search(L, e): # [10.2]
         return bSearch(L, e, 0, len(L) - 1)
 
 
+# [10.3]
+def selSort(L):
+    """ Lを >を用いて比較できる要素からなるリストとする
+    Lを昇順にソートする"""
+    suffixStart = 0
+    while suffixStart != len(L):
+        # suffixの各要素を見る
+        for i in range(suffixStart, len(L)):
+            if L[i] < L[suffixStart]:
+                # 要素の位置を入れ変える
+                L[suffixStart], L[i] = L[i], L[suffixStart]
+        suffixStart += 1
+        
+    
 if __name__ == '__main__':
     
     L = [i for i in range(10)]
