@@ -49,6 +49,59 @@ def selSort(L):
                 L[suffixStart], L[i] = L[i], L[suffixStart]
         suffixStart += 1
         
+# [10.4]
+def merge(left, right, compare):
+    """ leftとrightをソート済みのリストとして，
+    compareを要素間の順序を定義する関数とする
+    (left + right)と同じ要素からなり，
+    compareに従いソートされた新たなリストを返す """
+
+    result = []
+    i, j = 0, 0
+    while i < len(left) and j < len(right):
+        if compare(left[i], right[j]):
+            result.append(left[i])
+            i += 1
+        else:
+            result.append(right[j])
+            j += 1
+    while (i < len(left)):
+        result.append(left[i])
+        i += 1
+    while (j < len(right)):
+        result.append(right[j])
+        j += 1
+    return result
+            
+def mergeSort(L, compare = lambda x, y: x < y):
+    """ Lをリストとして，
+    compareをLの要素間の順序を定義する関数とする.
+    Lと同じ要素からなり，ソートされた新たなリストを返す """
+    if len(L) < 2:
+        return L[:]
+    else:
+        middle = len(L) // 2
+        left = mergeSort(L[:middle], compare)
+        right = mergeSort(L[middle:], compare)
+        return merge(left, right, compare)
+
+# 10.5:名姓が書かれた名前のリストをソートすることを考える
+def lastNameFirstName(name1, name2):
+    arg1 = name1.split(' ')
+    arg2 = name2.split(' ')
+    if arg1[1] != arg2[1]:
+        return arg1[1] < arg2[1]
+    else: # 姓が同じならば，名によりソート
+        return arg1[0] < arg2[0]
+
+def firstNameLastName(name1, name2):
+    arg1 = name1.split(' ')
+    arg2 = name2.split(' ')
+    if arg1[0] != arg2[0]:
+        return arg1[0] < arg2[0]
+    else: # 名が同じならば，姓によりソート
+        return arg1[1] < arg2[1]
+
     
 if __name__ == '__main__':
     
@@ -69,4 +122,28 @@ if __name__ == '__main__':
     print(sum)
     
     print(selSort(L1))
+
+    # 10.4 merge sort
+    l = [2, 1, 4, 5, 3]
+    print(mergeSort(l), mergeSort(l, lambda x, y : x > y))
+       
+    # 10.5 timsort
+    L = ['Tom Brady', 'Eric Grimson', 'Gisele Bundchen']
+    newL = mergeSort(L, lastNameFirstName)
+    print('sorted by last name =', newL)
+    newL = mergeSort(L, firstNameLastName)
+    print('sorted by first name =', newL)
+    
+    L = [3, 5, 2]
+    D = {'a':12, 'c':5, 'b':'dog'}
+    print(sorted(L)) # stable sort
+    print(L)
+    L.sort() # stable sort
+    print(L)
+    print(sorted(D))
+    # D.sort()
+
+    L = [[1,2,3], (3,2,1,0), 'abc']
+    print(sorted(L, key = len, reverse = True))
+        
     
