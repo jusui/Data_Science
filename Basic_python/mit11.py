@@ -1,6 +1,6 @@
 # coding: utf-8
 import pylab
-from mit08 import *
+from mit08 import findPayment
 
 # 11.2 住宅ローン残高の図示
 class Mortgage(object):
@@ -9,6 +9,7 @@ class Mortgage(object):
         self.loan = loan
         self.rate = annRate/12.0
         self.months = months
+        self.paid = [0.0]
         self.outstanding = [loan]
         self.payment = findPayment(loan, self.rate, months)
         self.legend = None # description of mortgage
@@ -34,7 +35,7 @@ class Mortgage(object):
         totPd = [self.paid[0]]
         for i in range(1, len(self.paid)):
             totPd.append(totPd[-1] + self.paid[i])
-        pylab.plot(totPd, style, label = self.lenged)
+        pylab.plot(totPd, style, label = self.legend)
         
     def plotNet(self, style):
         totPd = [self.paid[0]]
@@ -46,6 +47,80 @@ class Mortgage(object):
             pylab.plot(net, style, label = self.legend)
 
 
+# 11.3 Mortgage subclass
+class Fixed(Mortgage):
+    def __init__(self, loan, r, months):
+        Mortgage.__init__(self, loan, r, months)
+        self.legend = 'Fixed, ' + str(r * 100) + '%'
+
+class FixedWithPts(Mortgage):
+    def __init__(self, loan, r, months, pts):
+        Mortgage.__init__(self, loan, r, months)
+        self.pts = pts
+        self.paid = [loan * (pts / 100.0)]
+        self.legend = 'Fixed, ' + str(r * 100) + '%, ' + str(pts) + ' points'
+
+class TwoRate(Mortgage):
+    def __init__(self, loan, r, months, teaserRate, teaserMonths):
+        Mortgage.__init__(self, loan, teaserRate, months)
+        self.teaserMonths = teaserMonths
+        self.teaserRate = teaserRate
+        self.nextRate = r / 12.0
+        self.legend = str(teaserRate * 100) \
+                       + '% for ' + str(self.teaserMonths) \
+                       + ' months, then ' + str(r * 100) + '%'
+
+    def makePayment(self):
+        if len(self.paid) == self.teaserMonths + 1:
+            self.rate = self.nextRate
+            self.payment = findPayment(self.outstanding[-1],
+                                       self.rate,
+                                       self.months - self.teaserMonths)
+            Mortgage.makePayment(self)
+
+            
+def compareMortgages(amt, years, fixedRate, pts, ptsRate,
+                     varRate1, varRate2, varMonths):
+    totMonths = years * 12
+    fixed1 = Fixed(amt, fixedRate, totMonths)
+    fixed2 = FixedWithPts(amt, ptsRate, totMonths, pts)
+    twoRate = TwoRate(amt, varRate2, totMonths, varRate1, varMonths)
+    morts = [fixed1, fixed2, twoRate]
+    for m in range(totMonths):
+        for mort in morts:
+            mort.makePayment()
+    plotMortgages(morts, amt)
+
+def plotMortgages(morts, amt):
+    def labelPlot(figure, title, xLabel, yLabel):
+        pylab.figure(figure)
+        pylab.title(title)
+        pylab.xlabel(xLabel)
+        pylab.ylabel(yLabel)
+        pylab.legend(loc = 'best')
+        
+    styles = ['k-', 'k-', 'k:']
+    # 図を指定する際，番号の代わりに名前を用いる
+    payments, cost, balance, netCost = 0, 1, 2, 3
+    for i in range(len(morts)):
+        pylab.figure(payments)
+        morts[i].plotPayments(styles[i])
+        pylab.figure(cost)
+        morts[i].plotTotPd(styles[i])
+        pylab.figure(balance)
+        morts[i].plotBalance(styles[i])
+        pylab.figure(netCost)
+        morts[i].plotNet(styles[i])
+    labelPlot(payments, 'Monthly Payments of $' + str(amt) +
+              ' Mortgages', 'Months', 'Monthly Payments')
+    labelPlot(cost, 'Cash Outlay of $' + str(amt) +
+              ' Mortgages', 'Months', 'Total Payments')
+    labelPlot(balance, 'Balance Remaining of $', + str(amt) +
+              'Mortgages', 'Months', 'Remaining Loan Balance of $')
+    labelPlot(netCost, 'Net Cost of $' + str(amt) + 
+              'Mortgages', 'Months', 'Payments - Equity $')
+
+    
 if __name__ == '__main__':
     
     pylab.figure(0)
@@ -96,5 +171,20 @@ if __name__ == '__main__':
     # 凡例においてマーカーを表示する回数
     pylab.rcParams['legend.numpoints'] = 1
 
+    # 11.2
+    a1 = pylab.array([1, 2, 4])
+    print('a1 =', a1)
+    a2 = a1 * 2
+    print('a2 =', a2)
+    print('a1 + 3 =', a1 + 3)
+    print('3 - a1 =', 3 - a1)
+    print('a1 - a2 =', a1 - a2)
+    print('a1 * a2 =', a1 * a2)
 
+
+    # 11.5
+    compareMortgages(amt = 200000, years = 30, fixedRate = 0.07,
+                     pts = 3.25, ptsRate = 0.05,
+                     varRate1 = 0.045, varRate2 = 0.095, varMonths = 48)
+    
     pylab.show()
