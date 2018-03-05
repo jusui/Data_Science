@@ -32,19 +32,21 @@ class Mortgage(object):
         pylab.plot(self.outstanding, style, label = self.legend)
 
     def plotTotPd(self, style):
+        """支払額の総額をプロット"""
         totPd = [self.paid[0]]
         for i in range(1, len(self.paid)):
             totPd.append(totPd[-1] + self.paid[i])
         pylab.plot(totPd, style, label = self.legend)
         
     def plotNet(self, style):
+        """住宅ローンの総費用の近似値を時系列的にプロット"""
         totPd = [self.paid[0]]
         for i in range(1, len(self.paid)):
             totPd.append(totPd[-1] + self.paid[i])
-            equityAcquired = pylab.array([self.loan] * len(self.outstanding))
-            equityAcquired = equityAcquired - pylab.array(self.outstanding)
-            net = pylab.array(totPd) - equityAcquired
-            pylab.plot(net, style, label = self.legend)
+        equityAcquired = pylab.array([self.loan] * len(self.outstanding))
+        equityAcquired = equityAcquired - pylab.array(self.outstanding)
+        net = pylab.array(totPd) - equityAcquired
+        pylab.plot(net, style, label = self.legend)
 
 
 # 11.3 Mortgage subclass
@@ -76,7 +78,7 @@ class TwoRate(Mortgage):
             self.payment = findPayment(self.outstanding[-1],
                                        self.rate,
                                        self.months - self.teaserMonths)
-            Mortgage.makePayment(self)
+        Mortgage.makePayment(self)
 
             
 def compareMortgages(amt, years, fixedRate, pts, ptsRate,
@@ -91,6 +93,7 @@ def compareMortgages(amt, years, fixedRate, pts, ptsRate,
             mort.makePayment()
     plotMortgages(morts, amt)
 
+    
 def plotMortgages(morts, amt):
     def labelPlot(figure, title, xLabel, yLabel):
         pylab.figure(figure)
@@ -115,8 +118,8 @@ def plotMortgages(morts, amt):
               ' Mortgages', 'Months', 'Monthly Payments')
     labelPlot(cost, 'Cash Outlay of $' + str(amt) +
               ' Mortgages', 'Months', 'Total Payments')
-    labelPlot(balance, 'Balance Remaining of $', + str(amt) +
-              'Mortgages', 'Months', 'Remaining Loan Balance of $')
+    labelPlot(balance, 'Balance Remainng of $ ' + str(amt) +
+              ' Mortgages', 'Months', 'Remaining Loan Balance of $')
     labelPlot(netCost, 'Net Cost of $' + str(amt) + 
               'Mortgages', 'Months', 'Payments - Equity $')
 
@@ -181,8 +184,10 @@ if __name__ == '__main__':
     print('a1 - a2 =', a1 - a2)
     print('a1 * a2 =', a1 * a2)
 
+    
 
     # 11.5
+    pylab.figure(4)
     compareMortgages(amt = 200000, years = 30, fixedRate = 0.07,
                      pts = 3.25, ptsRate = 0.05,
                      varRate1 = 0.045, varRate2 = 0.095, varMonths = 48)

@@ -237,7 +237,7 @@ def findPayment(loan, r, m):
     """ loanとrをfloat型として，mをint型とする
     月割の金利をrとして，借入額loanの住宅ローンを
     mヶ月で返済する場合の毎月の返済額を返す """
-    return loan * ((r * (1 + r) ** m) / ((1 + r) ** m - 1))
+    return loan * ( (r * (1 + r)**m) / ((1 + r)**m - 1) )
 
 class Mortgage(object):
     """異なる住宅ローンを扱うための抽象クラス"""
@@ -260,28 +260,30 @@ class Mortgage(object):
 
     def __str__(self):
         return self.legend
+    
 
 class Fixed(Mortgage):
     def __init__(self, loan, r, months):
         Mortgage.__init__(self, loan, r, months)
-        self.legend = 'Fixed, ' + str(r * 100) + '%'
+        self.legend = 'Fixed, ' + str(round(r * 100, 2)) + '%'
 
 class FixedWithPts(Mortgage):
     def __init__(self, loan, r, months, pts):
         Mortgage.__init__(self, loan, r, months)
         self.pts = pts
-        self.paid = [loan * (pts / 100.0)]
-        self.legend = 'Fixed, ' + str(r * 100) + '%, ' + str(pts) + ' points'
+        self.paid = [loan * (pts / 100)]
+        self.legend = 'Fixed, ' + str(round(r * 100, 2)) + '%, ' \
+                      + str(pts) + ' points'
 
 class TwoRate(Mortgage):
     def __init__(self, loan, r, months, teaserRate, teaserMonths):
         Mortgage.__init__(self, loan, teaserRate, months)
         self.teaserMonths = teaserMonths
         self.teaserRate = teaserRate
-        self.nextRate = r / 12.0
+        self.nextRate = r / 12
         self.legend = str(teaserRate * 100) \
                        + '% for ' + str(self.teaserMonths) \
-                       + ' months, then ' + str(r * 100) + '%'
+                       + ' months, then ' + str(round(r * 100, 2)) + '%'
 
     def makePayment(self):
         if len(self.paid) == self.teaserMonths + 1:
@@ -289,7 +291,7 @@ class TwoRate(Mortgage):
             self.payment = findPayment(self.outstanding[-1],
                                        self.rate,
                                        self.months - self.teaserMonths)
-            Mortgage.makePayment(self)
+        Mortgage.makePayment(self)
 
     
 def compareMortgages(amt, years, fixedRate, pts, ptsRate,
