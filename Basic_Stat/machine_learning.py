@@ -46,8 +46,10 @@ def f1_score(tp, fp, fn, tn):
     return 2 * p * r / (p + r)
 
 if __name__ == '__main__':
-    
+
+    print("(tp, fp, fn, tn) = (70, 4930, 13930, 981070)")
     print("正解率 =", accuracy(70, 4930, 13930, 981070))
     print("適合率 =", precision(70, 4930, 13930, 981070))
     print("再現率 =", recall(70, 4930, 13930, 981070))
-    print("F1値 =", f1_score(70, 4930, 13930, 981070))    
+    print("F1値 =", f1_score(70, 4930, 13930, 981070))
+    
