@@ -1,6 +1,6 @@
 # coding: utf-8
 """
-nlp_31.py
+nlp_31, 32, 33
 usage:python nlp_31.py
 
 31. 動詞の表層形をすべて抽出せよ．
@@ -56,6 +56,7 @@ if __name__ == '__main__':
     verbs_suru = [morpheme['surface'] for morpheme in morphemes \
                      if morpheme['pos1'] == '名詞-サ変接続']
 
+    print("情報過多なので，100step飛ばしで表示")
     print(verbs_surface[::100])
     print(verbs_base[::100])
     print(verbs_suru[::100])
