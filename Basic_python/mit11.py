@@ -2,6 +2,9 @@
 import pylab
 from mit08 import findPayment
 
+"""[MIT_DS:11]
+https://akokubo.github.io/python-study-group-hachinohe/ """
+
 # 11.2 住宅ローン残高の図示
 class Mortgage(object):
     """異なる住宅ローンを扱うための抽象クラス"""

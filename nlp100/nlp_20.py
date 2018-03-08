@@ -42,5 +42,3 @@ with open("jawiki-country.json") as f:
             print(article_dict["text"])
         article_json = f.readline()
         
-        
-        

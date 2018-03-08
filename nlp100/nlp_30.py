@@ -6,13 +6,11 @@ usage:python nlp_30.py
 
 30. 形態素解析結果の読み込み
 形態素解析結果（neko.txt.mecab）を読み込むプログラムを実装せよ．ただし，各形態素は表層形（surface），基本形（base），品詞（pos），品詞細分類1（pos1）をキーとするマッピング型に格納し，1文を形態素（マッピング型）のリストとして表現せよ．第4章の残りの問題では，ここで作ったプログラムを活用せよ．
-[MeCab] https://qiita.com/taroc/items/b9afd914432da08dafc8
+
+[MeCab]
+https://qiita.com/taroc/items/b9afd914432da08dafc8
 """
 import MeCab
-import ngram
-import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib.font_manager import FontProperties
 
 # [typing]文字列を受け取り文字列を返す関数とアノテーションを付ける
 # https://docs.python.jp/3/library/typing.html
