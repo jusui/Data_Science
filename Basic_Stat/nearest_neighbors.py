@@ -72,7 +72,7 @@ def plot_cities():
     plt.show()
 
 
-def classify_and_plot_grid(k = 1): # default = 1
+def classify_and_plot_grid(k = 1): # default k = 1
     """全体を格子に分割し，
     それぞれの点で予測された言語を大都市の例と同じようにプロット"""
     
@@ -125,18 +125,17 @@ if __name__ == '__main__':
             if predicted_language == actual_language:
                 num_correct += 1
 
-        # print(k, "neighbors[s]:", num_correct, "correct out of", len(cities))
+        print(k, "neighbors[s]:", num_correct, "correct out of", len(cities))
 
     dimensions = range(1, 101)
-
     avg_distances = []
     min_distances = []
 
     random.seed(0)
     for dim in dimensions:
         distances = random_distances(dim, 10000) # 10000個の無作為点間の距離
-        avg_distances.append(mean(distances)) # 平均
-        min_distances.append(min(distances))  # min value
+        avg_distances.append(mean(distances))    # 平均距離
+        min_distances.append(min(distances))     # 最短距離
         print(dim, min(distances), mean(distances), min(distances) / mean(distances))
 
     min_avg_ratio = [min_distances / avg_distances
