@@ -42,8 +42,8 @@ def dataFrameFormDirectory(path, classification):
 
 data = DataFrame({'message' : [], 'class' : []})
 
-data = data.append(dataFrameFormDirectory('/Users/usui/work/python/DataScience/emails/spam', 'spam'))
-data = data.append(dataFrameFormDirectory('/Users/usui/work/python/DataScience/emails/ham', 'ham'))
+data = data.append(dataFrameFormDirectory('/Users/usui/work/python/jupyter_DataScience/emails/spam', 'spam'))
+data = data.append(dataFrameFormDirectory('/Users/usui/work/python/jupyter_DataScience/emails/ham', 'ham'))
 
 # print(data.values)
 print(data.head())
