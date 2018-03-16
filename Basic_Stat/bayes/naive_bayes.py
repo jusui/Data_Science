@@ -100,6 +100,9 @@ def get_subject_data(path):
     return data
 
 def p_spam_given_word(word_prob):
+    """bayesの定理を用いて，p(spam|spam in message)を計算する"""
+    
+    # word_probは，関数word_probabilitiesの返した3つの組の中の1つ
     word, prob_if_spam, prob_if_not_spam = word_prob
     return prob_if_spam / (prob_if_spam + prob_if_not_spam)
 
@@ -114,13 +117,17 @@ def train_and_test_model(path):
 
     classified = [(subject, is_spam, classifier.classify(subject))
                   for subject, is_spam in test_data]                  
-        
+
+    # 予測確率>0.5ならスパムであると判断し，実際のスパム，予測結果ペアを作る
     counts = Counter((is_spam, spam_probability > 0.5) # (actual predicted)
                      for _, is_spam, spam_probability in classified)
     print(counts)
 
+    # spam_probabilityを昇順にソート
     classified.sort(key = lambda row: row[2])
+    # スパムでないメッセージ中，"最高確率でスパム"と判定されたもの
     spammiest_hams = list(filter(lambda row: not row[1], classified))[-5:]
+    # スパムでないメッセージ中，"最低確率でスパムでない"と判定されたもの    
     hammiest_spams = list(filter(lambda row: row[1], classified))[:5]
 
     print("spammiest_hams", spammiest_hams)
