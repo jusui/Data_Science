@@ -10,18 +10,14 @@ http://www.yukun.info/blog/2008/07/python-string.html
 """
 
 str = "Hi He Lied Because Boron Could Not Oxidize Fluorine. New Nations Might Also Sign Peace Security Clause. Arthur King Can."
-# カンマを除去
-str = str.replace(',', "")
-# ピリオドを除去
-str = str.replace('.', "")
-# 文字列を区切る
-word = str.split()
+str = str.replace(',', "") # カンマを除去
+str = str.replace('.', "") # ピリオドを除去
+word = str.split()         # 文字列を区切る
 print(word)
 
-# 空の辞書を作る
-dict = {}
+dict = {} # 空の辞書を作る
 
-# 先頭1文字取り出すイニシャルの指定
+# イニシャルの先頭1文字を指定
 initial = [1, 5, 6, 7, 8, 9, 15, 16, 19]
 
 for element in word:
