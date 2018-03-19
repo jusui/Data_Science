@@ -13,15 +13,20 @@ from nlp_43 import Chunk
 """
 
 def sentence_to_dot(idx: int, sentence: list) -> str:
+    """dot言語作成の前処理[以下基本ルール]
+    https://qiita.com/rubytomato@github/items/51779135bc4b77c8c20d """
     head = "digraph sentence{} ".format(idx)
     body_head = "{ graph [rankdir = LR]; "
+    # 引数のアスタリスク:https://docs.python.jp/3/tutorial/controlflow.html#unpacking-argument-lists
     body_list = ['"{}"->"{}"; '.format(*chunk_pair.split()) for chunk_pair in sentence]
 
     return head + body_head + ''.join(body_list) + '}'
 
 def sentences_to_dot(sentences: list ) -> list:
+    """sentenceをdot言語に変換"""
     _dots = []
     for idx, sentence in enumerate(sentences):
+        # print("sentence :", sentence)
         _dots.append(sentence_to_dot(idx, sentence))
     return _dots
 
