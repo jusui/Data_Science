@@ -7,14 +7,11 @@
 """
 
 str = "Now I need a drink, alcoholic of course, after the heavy lectures involving quantum mechanics."
-# カンマを除去
+# [前処理] 文章からカンマ，ピリオドを除去し文字列をスペースで区切る
 str = str.replace(',', "")
-# ピリオドを除去
 str = str.replace('.', "")
-# 文字列を区切る
 str = str.split()
 
-# len で長さ取って，listに格納
 list = []
 for word in str:
     print(word)

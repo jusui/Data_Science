@@ -26,7 +26,7 @@ initial = [1, 5, 6, 7, 8, 9, 15, 16, 19]
 
 for element in word:
     # print(len(word)) とかだと，splitして区切った文章の長さを返すため，不向き
-#    print(word.index(element))
+    # print(word.index(element))
 
     # split()した文字列は，0番目から格納しているため，"+1"
     if word.index(element) + 1 in initial:
