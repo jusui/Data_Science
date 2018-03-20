@@ -14,6 +14,7 @@ def n_gram(seq, n = 2):
 
 sentence = "I am an NLPer"
 sentence = sentence.replace(" ", "")
+# sentence = re.split(r"[\s,.]", sentence)
 print(sentence)
 
 bi_gram = n_gram(sentence)

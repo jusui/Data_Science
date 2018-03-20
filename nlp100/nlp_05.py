@@ -44,4 +44,3 @@ https://docs.python.jp/3/library/re.html
 words = re.split(r"[\s,.]", sentence) # 空白文字を見つけたら，分割し，リストで返す.
 word_bi_gram = n_gram(words)
 print("word_bi_gram:", word_bi_gram)
-
