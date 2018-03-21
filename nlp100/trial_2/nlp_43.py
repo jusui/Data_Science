@@ -34,9 +34,20 @@ class Chunk:
     def has_particle(self) -> bool:
         return any([_morph.pos == '助詞' for _morph in self.morphs])
     
+    def first_verb(self) -> Morph:
+        return [_morph for _morph in self.morphs if _morph.pos == '動詞'][0]
 
+    def last_particle(self) -> list:
+        return [_morph for _morph in self.morphs if _morph.pos == '助詞'][-1]
+    
     def pair(self, sentence: list) -> str:
         return self.join_morphs() + '\t' + sentence[self.dst].join_morphs()
+
+    def replace_noun(self, alt: str) -> None:
+        """名詞の表象を置換"""
+        for _morph in self.morphs:
+            if _morph.pos == '名詞':
+                _morph.surface = alt
         
     def __str__(self) -> str:
         return 'srcs: {}, dst: {}, morphs: ({})'\
