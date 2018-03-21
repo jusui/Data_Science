@@ -26,10 +26,10 @@ class Morph:
 
     def __init__(self, surface, base, pos, pos1):
 
-        self.surface = surface
-        self.base = base
-        self.pos = pos
-        self.pos1 = pos1
+        self.surface = surface  # 表層系
+        self.base = base        # 基本形
+        self.pos = pos          # 品詞
+        self.pos1 = pos1        # 品詞細分類
 
     def is_end_of_sentence(self) -> bool:
         return self.pos1 == '句点'
