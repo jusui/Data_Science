@@ -36,13 +36,12 @@ def case_patterns(_chunked_sentences: list) -> list:
         for _chunk in sentence:
             if not _chunk.has_verb():
                 continue
-
+            # 助詞
             particles = [c.last_particle().base for c in sentence \
                          if c.dst == _chunk.srcs and c.has_particle()]
-            # print(particles) # 助詞
 
             if len(particles) > 0:
-                _case_pattern.append([_chunk.first_verb().base, sorted(particles)])
+                _case_pattern.append([_chunk.first_verb().base, sorted(particles)]) # 動詞と助詞を格納
 
     return _case_pattern
 
@@ -50,8 +49,8 @@ def print_case_pattern_ranking(_grep_str: str) -> None:
     """コーパス中(case_pattern_txt)の出現頻度の高い順に上位20位をUNIXコマンドで表示する"""
     
     _grep_str = '' if _grep_str == '' else '| grep \'^{}\t\''.format(_grep_str)
-    print(subprocess.run('cat case_patterns.txt {} | sort | uniq -c | sort -r | head -10'\
-                         .format(_grep_str), shell = True))
+    print( subprocess.run('cat case_patterns.txt {} | sort | uniq -c | sort -r | head -10'\
+                         .format(_grep_str), shell = True) )
 
     
 if __name__ == '__main__':
