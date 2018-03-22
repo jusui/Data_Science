@@ -34,6 +34,18 @@ class Chunk:
 
     def has_particle(self) -> bool:
         return any([_morph.pos == '助詞' for _morph in self.morphs])
+
+    def has_sahen_connection_noun_plus_wo(self) -> bool:
+        """ サ変接続名詞+を(助詞)を含むかどうかを調べる """
+        
+        for idx, _morph in enumerate(self.morphs):
+            if _morph.pos == '名詞' \
+               and _morph.pos1 == 'サ変接続' \
+               and len(self.morphs[idx:]) > 1 \
+               and self.morphs[idx + 1].pos == '助詞' \
+               and self.morphs[idx + 1].base == 'を':
+                return True
+        return False
     
     def first_verb(self) -> Morph:
         return [_morph for _morph in self.morphs if _morph.pos == '動詞'][0]
