@@ -32,34 +32,6 @@ def path_to_root(_chunk: Chunk, _sentence: list) -> list:
 def join_chunks_by_arrow(_chunks: list) -> None:
     return ' -> '.join([c.join_morphs() for c in _chunks])
     
-def sahen_case_frame_patterns(_chunked_sentences: list) -> list:
-    """ 動詞の格フレームのパターン(動詞と助詞の組み合わせ)のリストを返す """
-
-    _sahen_case_frame_patterns = []
-    for sentence in _chunked_sentences:
-        for _chunk in sentence:
-            if not _chunk.has_verb():
-                continue
-
-            sahen_connection_noun = [c.join_morphs() for c in sentence if c.dst == _chunk.srcs \
-                                     and c.has_sahen_connection_noun_plus_wo()]
-            clauses = [c.join_morphs() for c in sentence if c.dst == _chunk.srcs \
-                       and not c.has_sahen_connection_noun_plus_wo() \
-                       and c.has_particle()]
-
-            particles = [c.last_particle().base for c in sentence \
-                         if c.dst == _chunk.srcs \
-                         and not c.has_sahen_connection_noun_plus_wo() \
-                         and c.has_particle()]
-
-            if len(sahen_connection_noun) > 0 and len(particles) > 0:
-                _sahen_case_frame_patterns.append(
-                    [sahen_connection_noun[0] + _chunk.first_verb().base,
-                     *sorted_double_list(particles, clauses)]
-                )
-
-    return _sahen_case_frame_patterns
-    
 def sorted_double_list(key_list: list, value_list: list) -> tuple:
     """ リストのキーと値を辞書にしてキーでソートして
     2につのリストに分解してタプルを返す """
@@ -82,7 +54,7 @@ def save_sahen_case_frame_patterns(_sahen_case_frame_patterns: list,
 if __name__ == '__main__':
     
     chunked_sentences = make_chunk_list('neko.txt.cabocha')
-    for sentence in chunked_sentences:
+    for sentence in chunked_sentences[1:10]:
         for chunk in sentence:
             if chunk.has_noun():
                 print(join_chunks_by_arrow(path_to_root(chunk, sentence)))
