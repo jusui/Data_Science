@@ -11,7 +11,7 @@ with open('nlp.txt', encoding = 'utf-8') as NLP:
         for item in re.sub(r"(?P<group1>[.;:?!])(\s+)(?P<group3>[A-Z])",
                            r"\1\2\n\3", line).split(" "):
             # print(item)
-            item = re.sub( r"\n", "", item)
+            item = re.sub(r"\n", "", item)
 
             if re.search("\.", item) != None:
                 item = re.sub(r"(\.)", r".\n", item)
