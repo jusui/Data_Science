@@ -4,6 +4,11 @@ from stemming.porter2 import stem
 """
 52. ステミング
 51の出力を入力として受け取り，Porterのステミングアルゴリズムを適用し，単語と語幹をタブ区切り形式で出力せよ． Pythonでは，Porterのステミングアルゴリズムの実装としてstemmingモジュールを利用するとよい．
+
+https://docs.python.jp/3/library/re.html
+https://note.nkmk.me/python-re-match-search-findall-etc/
+http://doc.okkez.net/static/1.8.7/doc/spec=2fregexp.html#string
+http://www.yukun.info/blog/2008/07/python-regular-expression-range.html
 """
 
 with open('nlp.txt', encoding = 'utf-8') as NLP:
