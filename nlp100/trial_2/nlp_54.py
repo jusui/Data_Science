@@ -2,6 +2,12 @@
 import xml.etree.ElementTree as ET
 from lxml import etree
 
+"""
+54.
+関心のある要素の探索
+https://docs.python.jp/3/library/xml.etree.elementtree.html
+
+"""
 tree = etree.parse("nlp.txt.xml")
 
 for token in tree.iter('token'):
