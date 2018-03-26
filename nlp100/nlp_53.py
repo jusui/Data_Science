@@ -1,6 +1,5 @@
 # coding: utf-8
-import pprint
-import json, re
+import re
 import corenlp
 """
 53. Tokenization
