@@ -8,7 +8,7 @@ import os
 from lxml import etree
 
 tree = etree.parse("nlp.txt.xml")
+xpath = './document/sentences/sentence/tokens/token/[NER="PERSON"]'
 
-for token in tree.iterfind(
-        './document/sentences/sentence/tokens/token/[NER="PERSON"]'):
+for token in tree.iterfind(xpath):
     print(token.findtext('word'))
