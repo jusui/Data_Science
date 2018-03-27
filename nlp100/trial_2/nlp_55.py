@@ -8,6 +8,7 @@ import os
 from lxml import etree
 
 tree = etree.parse("nlp.txt.xml")
+# <NER> tagの値がPERSONを抽出
 xpath = './document/sentences/sentence/tokens/token/[NER="PERSON"]'
 
 for token in tree.iterfind(xpath):
