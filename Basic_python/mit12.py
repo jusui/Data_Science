@@ -1,4 +1,5 @@
 # coding: utf-8
+from mit09 import getPowerset
 
 class Item(object):
     # Item class
@@ -71,6 +72,46 @@ def testGreedys(maxWeight = 20):
 
     testGreedy(items, maxWeight, density)
 
+
+"""
+0/1 Knapsack problem
+
+1．すべての品物の組み合わせを列挙する。品物集合のすべての部分集合を作る。べき集合。
+2．重量制限を超えるような品物の組み合わせを取り除く。
+3．残された組み合わせの内，総価値が最も大きいものを選ぶ。
+"""
+
+def chooseBest(pset, maxWeight, getVal, getWeight):
+
+    bestVal = 0.0
+    bestSet = None
+    for items in pset:
+        itemsVal = 0.0
+        itemsWeight = 0.0
+        for item in items:
+            itemsVal += getVal(item)
+            itemsWeight += getWeight(item)
+        if itemsWeight <= maxWeight and itemsVal > bestVal:
+            bestVal = itemsVal
+            bestSet = items
+
+    return (bestSet, bestVal)
+
+def testBest(maxWeight = 20):
+    """ getPowerset(): list L. 全ての可能な組み合わせからなるリストを返す
+    (e.f.) L = [1, 2]ならば，[], [1], [2], [1,2]を要素に持つリストを返す """
+    
+    items = builditems()
+    pset = getPowerset(items)
+    taken, val = chooseBest(pset, maxWeight, Item.getValue,
+                            Item.getWeight)
+    print('Total value of items taken is', val)
+    for item in taken:
+        print(item)
+        
+    
 if __name__ == '__main__':
 
     testGreedys()
+    
+    
