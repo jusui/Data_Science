@@ -102,7 +102,65 @@ def flipPlot(minExp, maxExp):
     pylab.ylabel('#Heads/#Tails')
     pylab.plot(xAxis, ratios, 'k')
 
+
+def variance(X):
+    """ X を数のリストとする, X の分散を返す """
+    mean = sum(X) / len(X)
+    tot = 0.0
+    for x in X:
+        tot += (x - mean) ** 2
+    return tot / len(X)
+
+def stdDev(X):
+    """ X を数のリストとする, X の標準偏差を返す """
+    return variance(X) ** 0.5
+
+def makePlot(xVals, yVals, title, xLabel, yLabel, style, logX = False, logY = False):
+    pylab.figure()
+    pylab.title(title)
+    pylab.xlabel(xLabel)
+    pylab.ylabel(yLabel)
+    pylab.plot(xVals, yVals, style)
+    if logX:
+        pylab.semilogx()
+    if logY:
+        pylab.semilogx()
+
+def runTrial(numFlips):
+    numHeads = 0
+    for n in range(numFlips):
+        if random.choice(('H', 'T')) == 'H':
+            numHeads += 1
+    numTrials = numFlips - numHeads
+    return (numHeads, numTrials)
+
+def flipPlot1(minExp, maxExp, numTrials):
+    """ int minExp, maxExp > 0 (min < max) 
+    2 ** minExp ~ 2 ** maxExp 回のコイン投げを numTRials 回行った結果の要約をプロットする """
+
+    ratiosMeans, diffsMeans, ratiosSDs, diffsSDs = [], [], [], []
+    xAxis = []
+    for exp in range(minExp, maxExp + 1):
+        xAxis.append(2 ** exp)
+    for numFlips in xAxis:
+        ratios, diffs = [], []
+        for t in range(numTrials):
+            numHeads, numTails = runTrial(numFlips)
+            ratios.append(numHeads / numTrials)
+            diffs.append(abs(numHeads - numTails))
+        ratiosMeans.append(sum(ratios) / numTrials)
+        diffsMeans.append(sum(diffs) / numTrials)
+        ratiosSDs.append(stdDev(ratios))
+        diffsSDs.append(stdDev(diffs))
+    numTrialsString = ' (' + str(numTrials) + ' Trials)'
+    title = 'Mean Heads / Tails Ratios' + numTrialsString
+    makePlot(xAxis, ratiosMeans, title, 'Number of flips', 'Mean Heads / Tails', 'ko', logX = True)
+    title = 'SD Heads /Tails Ratios' + numTrialsString
+    makePlot(xAxis, ratiosSDs, title, 'Number of Flips', 'Standard Deviation', 'ko', logY = True)
+        
+    
             
+    
 if __name__ == "__main__":
 
     rollN(10)
@@ -113,4 +171,6 @@ if __name__ == "__main__":
     
     random.seed(0)
     flipPlot(4, 20)
+
+    flipPlot1(4, 20, 20)
     plt.show()
