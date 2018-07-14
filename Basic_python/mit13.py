@@ -1,5 +1,5 @@
 # coding:utf-8
-from mit12 import *
+from mit12 import Item
 import random
 
 """
@@ -46,10 +46,11 @@ def maxVal(toConsider, avail):
 
     else:
         nextItem = toConsider[0]
+        # search for left node
         withVal, withToTake = maxVal(toConsider[1:], avail - nextItem.getWeight())
 
         withVal += nextItem.getValue()
-        # search for left node
+        # search for right node
         withoutVal, withoutToTake = maxVal(toConsider[1:], avail)
 
         # select best node
@@ -57,9 +58,7 @@ def maxVal(toConsider, avail):
             result = (withVal, withToTake + (nextItem, ))
         else:
             result = (withoutVal, withoutToTake)
-
     return result
-
 
 def smallTest():
     names = ['a', 'b', 'c', 'd']
@@ -70,7 +69,7 @@ def smallTest():
     for i in range(len(vals)):
         Items.append(Item(names[i], vals[i], weights[i]))
 
-    val, taken = maxVal(Items, 5)
+    val, taken = fastMaxVal(Items, 5)
     for item in taken:
         print(item)
 
@@ -79,25 +78,68 @@ def smallTest():
 def buildManyItems(numItems, maxVal, maxWeight):
     items = []
     for i in range(numItems):
-        items.append(Item(str(i),
-                          random.randint(1, maxVal),
-                          random.randint(1, maxWeight)))
+        
+        ## maxVal ##
+        # items.append(Item(str(i),
+        #                   random.randint(1, maxVal),
+        #                   random.randint(1, maxWeight)))
 
+        ## fastMaxVal ##
+        items.append(Item(str(i),
+                         random.randint(1, maxVal),
+                         random.randint(1, maxWeight) * random.random()))
+        
     return items
 
 def bigTest(numItems):
     items = buildManyItems(numItems, 10, 10)
-    val, taken = maxVal(items, 40)
+    # val, taken = maxVal(items, 40)
+    val, taken = fastMaxVal(items, 1000)
     print('Items taken')
     for item in taken:
         print(item)
     print('Total value of items taken = ', val)
 
 
+def fastMaxVal(toConsider, avail, memo = {}):
+    """ toCondier:product list, avail:weight, memo:recursion value
+    """
+    if (len(toConsider), avail) in memo:
+        result = memo[(len(toConsider), avail)]
+
+    elif toConsider == [] or avail == 0:
+        result = (0, ())
+
+    elif toConsider[0].getWeight() > avail:
+        result = fastMaxVal(toConsider[1:], avail, memo)
+        
+    else:
+        nextItem = toConsider[0]
+        withVal, withToTake = fastMaxVal(toConsider[1:],
+                                         avail - nextItem.getWeight(), memo)
+        
+
+        withVal += nextItem.getValue()
+        # search for right node
+        withoutVal, withoutToTake = fastMaxVal(toConsider[1:], avail, memo)
+        
+        # select better node
+        if withVal > withoutVal:
+            result = (withVal, withToTake + (nextItem, ))
+        else:
+            result = (withoutVal, withoutToTake)
+            
+    memo[(len(toConsider), avail)] = result
+    print(result)
+    return result
+    
+           
 if __name__ == "__main__":
 
     # print(fib(10)) ### not fast to calculate fibnacci
     print(fastFib(120))
     
     print(smallTest())
-    print(bigTest(10))
+    bigTest(10)
+
+    

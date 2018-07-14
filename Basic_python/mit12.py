@@ -39,8 +39,7 @@ def density(item):
 
 # 12.2 keyFunction引数に紐づく
 def greedy(items, maxWeight, keyFunction):
-    """ items はリスト，maxWeight >= 0とし，
-    keyFunctionはitemsの要素を数にマップする.
+    """ items はリスト，maxWeight >= 0とし，keyFunctionはitemsの要素を数にマップする.
     t_calc ~ O(nlogn) """
 
     # sorted()で新しいリストを作り大きい順に並べる
@@ -52,7 +51,6 @@ def greedy(items, maxWeight, keyFunction):
             result.append(itemsCopy[i])
             totalWeight += itemsCopy[i].getWeight()
             totalValue  += itemsCopy[i].getValue()
-            
     return (result, totalValue)
 
 
