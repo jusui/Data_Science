@@ -22,7 +22,7 @@ class Item(object):
     def getWeight(self):
         return self.weight
 
-    def __str__(self):
+    def __str__(self): ##  class 自身を出力する際に使う
         result = '<' + self.name + ', ' + str(self.value) \
                  + ', ' + str(self.weight) + '>'
         return result
@@ -54,7 +54,8 @@ def greedy(items, maxWeight, keyFunction):
     return (result, totalValue)
 
 
-# 12.3 品物(item)リストを作り，リストの異なった順序を用いてgreedy()をテストするtestGreedysを定義
+# 12.3 品物(item)リストを作り，リストの異なった順序を用いてgreedy()をテスト
+# testGreedys を定義
 def buildItems():
     names = ['clock', 'painting', 'radio', 'vase', 'book', 'computer']
     values = [175, 90, 20, 50, 10, 200]
@@ -77,7 +78,6 @@ def testGreedys(maxWeight = 20):
     print('\nUse greedy by weight to fill knapsack of size', maxWeight)
     testGreedy(items, maxWeight, weightInverse)
     print('\nUse greedy by weight to fill knapsack of size', maxWeight)
-
     testGreedy(items, maxWeight, density)
 
 
@@ -98,7 +98,7 @@ sum(V[i] * I[i].value)
 def chooseBest(pset, maxWeight, getVal, getWeight):
 
     """
-    1．すべての品物の組み合わせを列挙する。つまり，品物集合のすべての部分集合(べき集合)を作る。
+    1．すべての品物の組み合わせを列挙する。品物集合のすべての部分集合(べき集合)を作る。
     2．重量制限を超えるような品物の組み合わせを取り除く。
     3．残された組み合わせの内，総価値が最も大きいものを選ぶ。
     """
@@ -132,5 +132,4 @@ def testBest(maxWeight = 20):
 if __name__ == '__main__':
 
     testGreedys()
-    
     
