@@ -101,7 +101,8 @@ def flipPlot(minExp, maxExp):
     pylab.xlabel('# of Flips')
     pylab.ylabel('#Heads/#Tails')
     pylab.plot(xAxis, ratios, 'k')
-
+    # pylab.logx()
+    # pylab.logy()    
 
 def variance(X):
     """ X を数のリストとする, X の分散を返す """
@@ -115,7 +116,8 @@ def stdDev(X):
     """ X を数のリストとする, X の標準偏差を返す """
     return variance(X) ** 0.5
 
-def makePlot(xVals, yVals, title, xLabel, yLabel, style, logX = False, logY = False):
+def makePlot(xVals, yVals, title, xLabel, yLabel, style,
+             logX = False, logY = False):
     pylab.figure()
     pylab.title(title)
     pylab.xlabel(xLabel)
@@ -135,8 +137,8 @@ def runTrial(numFlips):
     return (numHeads, numTrials)
 
 def flipPlot1(minExp, maxExp, numTrials):
-    """ int minExp, maxExp > 0 (min < max) 
-    2 ** minExp ~ 2 ** maxExp 回のコイン投げを numTRials 回行った結果の要約をプロットする """
+    """ int minExp, maxExp > 0 (min < max)
+    2 ** minExp ~ 2 ** maxExp 回のコイン投げを numTRials 回行った結果の要約をプロット """
 
     ratiosMeans, diffsMeans, ratiosSDs, diffsSDs = [], [], [], []
     xAxis = []
@@ -154,12 +156,64 @@ def flipPlot1(minExp, maxExp, numTrials):
         diffsSDs.append(stdDev(diffs))
     numTrialsString = ' (' + str(numTrials) + ' Trials)'
     title = 'Mean Heads / Tails Ratios' + numTrialsString
-    makePlot(xAxis, ratiosMeans, title, 'Number of flips', 'Mean Heads / Tails', 'ko', logX = True)
+    makePlot(xAxis, ratiosMeans, title,
+             'Number of flips', 'Mean Heads / Tails', 'ko', logX = True)
     title = 'SD Heads /Tails Ratios' + numTrialsString
-    makePlot(xAxis, ratiosSDs, title, 'Number of Flips', 'Standard Deviation', 'ko', logY = True)
-        
+    makePlot(xAxis, ratiosSDs, title,
+             'Number of Flips', 'Standard Deviation', 'ko', logY = True)
+    title = 'Mean abs(#Heads - #Trials)' + numTrialsString
+    makePlot(xAxis, diffsMeans, title,
+             'Number of Flips', 'Mean abs(#Heads - #Trials)', 'ko',
+             logX = True, logY = True)
+    title = 'SD abs(#Heads - #Trials)' + numTrialsString
+    makePlot(xAxis, diffsSDs, title,
+             'Number of Flips', 'Standard Deviation', 'ko',
+             logX = True, logY = True)
     
-            
+
+def CV(X):
+    mean = sum(X) / len(X)
+    try:
+        return stdDev(X) / mean
+    except ZeroDivisionError:
+        return float('nan')
+    
+def flipPlot2(minExp, maxExp, numTrials):
+    """ int minExp, maxExp > 0 (min < max), numTrials > 0
+    2 ** minExp ~ 2 ** maxExp 回のコイン投げを numTRials 回行った結果の要約をプロット """
+
+    ratiosMeans, diffsMeans, ratiosSDs, diffsSDs = [], [], [], []
+    xAxis = []
+    for exp in range(minExp, maxExp + 1):
+        xAxis.append(2 ** exp)
+    for numFlips in xAxis:
+        ratios, diffs = [], []
+        for t in range(numTrials):
+            numHeads, numTails = runTrial(numFlips)
+            ratios.append(numHeads / numTrials)
+            diffs.append(abs(numHeads - numTails))
+        ratiosMeans.append(sum(ratios) / numTrials)
+        diffsMeans.append(sum(diffs) / numTrials)
+        ratiosSDs.append(stdDev(ratios))
+        diffsSDs.append(stdDev(diffs))
+    numTrialsString = ' (' + str(numTrials) + ' Trials)'
+    title = 'Mean Heads / Tails Ratios' + numTrialsString
+    makePlot(xAxis, ratiosMeans, title,
+             'Number of flips', 'Mean Heads / Tails', 'ko', logX = True)
+    title = 'SD Heads /Tails Ratios' + numTrialsString
+    makePlot(xAxis, ratiosSDs, title,
+             'Number of Flips', 'Standard Deviation', 'ko', logY = True)
+    title = 'Mean abs(#Heads - #Trials)' + numTrialsString
+    makePlot(xAxis, diffsMeans, title,
+             'Number of Flips', 'Mean abs(#Heads - #Trials)', 'ko',
+             logX = True, logY = True)
+    title = 'SD abs(#Heads - #Trials)' + numTrialsString
+    makePlot(xAxis, diffsSDs, title,
+             'Number of Flips', 'Standard Deviation', 'ko',
+             logX = True, logY = True)
+    title = 'Coeff of Var. Heads / Tails Ratio' + numTrialsString
+    makePlot(xAxis, ratiosCVs, title, '# of Flips',
+             'Coeff. of Var', 'ko', logX = True, logY = True)
     
 if __name__ == "__main__":
 
@@ -172,5 +226,6 @@ if __name__ == "__main__":
     random.seed(0)
     flipPlot(4, 20)
 
-    flipPlot1(4, 20, 20)
+    # flipPlot1(4, 20, 20)
+    flipPlot1(4, 20, 20)    
     plt.show()
