@@ -170,8 +170,8 @@ def flipPlot1(minExp, maxExp, numTrials):
              'Number of Flips', 'Standard Deviation', 'ko',
              logX = True, logY = True)
     
-
 def CV(X):
+    ''' Coefficient of variation: std / mean '''
     mean = sum(X) / len(X)
     try:
         return stdDev(X) / mean
@@ -183,7 +183,7 @@ def flipPlot2(minExp, maxExp, numTrials):
     2 ** minExp ~ 2 ** maxExp 回のコイン投げを numTRials 回行った結果の要約をプロット """
 
     ratiosMeans, diffsMeans, ratiosSDs, diffsSDs = [], [], [], []
-    xAxis = []
+    ratiosCVs, diffsCVs, xAxis = [], [], []
     for exp in range(minExp, maxExp + 1):
         xAxis.append(2 ** exp)
     for numFlips in xAxis:
@@ -196,6 +196,8 @@ def flipPlot2(minExp, maxExp, numTrials):
         diffsMeans.append(sum(diffs) / numTrials)
         ratiosSDs.append(stdDev(ratios))
         diffsSDs.append(stdDev(diffs))
+        ratiosCVs.append(CV(ratios))
+        diffsCVs.append(CV(diffs))
     numTrialsString = ' (' + str(numTrials) + ' Trials)'
     title = 'Mean Heads / Tails Ratios' + numTrialsString
     makePlot(xAxis, ratiosMeans, title,
@@ -227,5 +229,5 @@ if __name__ == "__main__":
     flipPlot(4, 20)
 
     # flipPlot1(4, 20, 20)
-    flipPlot1(4, 20, 20)    
+    flipPlot2(4, 20, 20)    
     plt.show()
