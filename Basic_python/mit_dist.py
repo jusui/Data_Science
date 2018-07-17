@@ -42,7 +42,6 @@ def makePlots(numFlips1, numFlips2, numTrials):
     pylab.xlim(xmin, xmax)
     labelPlot(numFlips2, numTrials, mean2, sd2)
 
-
 def gaussian(x, mu, sigma):
     factor1 = (1.0 / (sigma * ((2 * pylab.pi) ** 0.5)))
     factor2 = pylab.e ** -(((x - mu) ** 2) / (2 * sigma ** 2))
@@ -108,6 +107,62 @@ def successfulStarts(successProb, numTrials):
         triesBeforeSuccess.append(consecFailures)
     return triesBeforeSuccess
 
+def collisionProb(n, k):
+    prob = 1.0
+    for i in range(1, k):
+        prob = prob * ((n - i) / n)
+    return 1 - prob
+
+def simInsertions(numIndices, numInsertions):
+    """ int numIndices, numInsertions > 0 
+    if collision return 1, else return 0 """
+
+    choices = range(numIndices) # list of possible indices
+    used = []
+    for i in range(numInsertions):
+        hashVal = random.choice(choices)
+        if hashVal in used: # there is a collision
+            return 1
+        else:
+            used.append(hashVal)
+    return 0
+
+def findProb(numIndices, numInsertions, numTrials):
+    collisions = 0
+    for t in range(numTrials):
+        collisions += simInsertions(numIndices, numInsertions)
+    return collisions / numTrials
+
+
+""" Simulation of validation of World Series """
+
+def playSeries(numGames, teamProb):
+    numWon = 0
+    for game in range(numGames):
+        if random.random() >= teamProb:
+            numWon += 1
+    return (numWon > numGames // 2)
+
+def fractionWon(teamProb, numSeries, seriesLen):
+    won = 0
+    for series in range(numSeries):
+        if playSeries(seriesLen, teamProb):
+            won += 1
+    return won / float(numSeries)
+
+def simSeries(numSeries):
+    prob = 0.5
+    fracsWon, probs = [], []
+    while prob <= 1.0:
+        fracsWon.append(fractionWon(prob, numSeries, 7))
+        probs.append(prob)
+        prob += 0.01
+    pylab.axhline(0.95) # Draw line at 95 %
+    pylab.plot(probs, fracsWon, 'k', linewidth = 5)
+    pylab.xlabel('Prob of Winning a Game')
+    pylab.ylabel('Prob of Winning a Series')
+    pylab.title(str(numSeries) + ' Seven-Game Series')
+        
 
 if __name__ == '__main__':
 
@@ -132,5 +187,12 @@ if __name__ == '__main__':
     pylab.xlabel('Tries Before Success')
     pylab.ylabel('# of Occurrences Out of ' + str(numTrials))
     pylab.title('Probability of Starting Each Try = ' + str(probOfSuccess))
-    
+
+    print('Actual probability of a collision = ', collisionProb(1000, 50))
+    print('Est. probability of a collision = ', findProb(1000, 50, 10000))
+    print('Actual probability of a collision = ', collisionProb(1000, 200))
+    print('Est. probability of a collision = ', findProb(1000, 200, 10000))
+    pylab.figure()
+
+    simSeries(1000)
     plt.show()
