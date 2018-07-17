@@ -42,6 +42,7 @@ def makePlots(numFlips1, numFlips2, numTrials):
     pylab.xlim(xmin, xmax)
     labelPlot(numFlips2, numTrials, mean2, sd2)
 
+
 def gaussian(x, mu, sigma):
     factor1 = (1.0 / (sigma * ((2 * pylab.pi) ** 0.5)))
     factor2 = pylab.e ** -(((x - mu) ** 2) / (2 * sigma ** 2))
@@ -58,6 +59,7 @@ def checkEmpirical(numTrials):
                                         mu + numStd * sigma,
                                         (mu, sigma))[0]
             print(' Fraction within', numStd, 'std =', round(area, 4))
+
 
 
 def showErrorBars(minExp, maxExp, numTrials):
@@ -162,13 +164,16 @@ def simSeries(numSeries):
     pylab.xlabel('Prob of Winning a Game')
     pylab.ylabel('Prob of Winning a Series')
     pylab.title(str(numSeries) + ' Seven-Game Series')
-        
+
+
 
 if __name__ == '__main__':
 
     # makePlots(100, 1000, 100000)
 
+
     # quad function : 1.積分の近似値，2.結果の絶対誤差推定
+
     print(scipy.integrate.quad(abs, 0, 5)[0]) # 0 ~ 5 までの積分結果= 5 * 5 * (1/2)
     # mean = 0, std = 1, -2 <= x <= 2
     print(scipy.integrate.quad(gaussian, -2, 2, (0, 1))[0])
@@ -196,3 +201,5 @@ if __name__ == '__main__':
 
     simSeries(1000)
     plt.show()
+    
+    # plt.show()
