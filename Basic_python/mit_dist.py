@@ -59,7 +59,6 @@ def checkEmpirical(numTrials):
                                         (mu, sigma))[0]
             print(' Fraction within', numStd, 'std =', round(area, 4))
 
-
 def showErrorBars(minExp, maxExp, numTrials):
     """ int minExp, maxExp, numTrials > 0 (minExp < maxExp) """
 
@@ -162,13 +161,17 @@ def simSeries(numSeries):
     pylab.xlabel('Prob of Winning a Game')
     pylab.ylabel('Prob of Winning a Series')
     pylab.title(str(numSeries) + ' Seven-Game Series')
-        
+
+
+
+
+            
 
 if __name__ == '__main__':
 
     # makePlots(100, 1000, 100000)
 
-    # quad function : 1.積分の近似値，2.結果の絶対誤差推定
+    # quad function : 1.積分の近似値，2.結果の絶対誤差推定    
     print(scipy.integrate.quad(abs, 0, 5)[0]) # 0 ~ 5 までの積分結果= 5 * 5 * (1/2)
     # mean = 0, std = 1, -2 <= x <= 2
     print(scipy.integrate.quad(gaussian, -2, 2, (0, 1))[0])
